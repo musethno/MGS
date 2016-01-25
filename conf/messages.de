@@ -1,0 +1,146 @@
+texto_en_idioma = Test: Set to German
+languages 	= Sprachen
+selectlanguage = Bitte Sprache wählen
+lang.de		=	Deutsch
+lang.en-US		=	English
+no_num_row = Keine Daten vorhanden
+user.add			= Benutzer hinzufügen
+
+edit			= Speichern
+back			= Zurück
+add 			= Hinzufügen
+cancel 		= Abbrechen
+delete 		= Entfernen
+up 			= Hinauf
+down			= Hinunter
+view 			= Bearbeiten
+number 		= Nummer
+name 			= Name
+email 		= Email
+title			= Titel
+type_id 		= Typ
+sub			= Übergeordnetes Menü
+file			= Datei
+file.associated = Hintergrundbild
+no_content  = Kein Inhalt
+upload_file = Upload
+close			= Schliessen
+
+password 	= Passwort
+password2 	= Passwort bestätigen
+change 		= Speichern
+password.changed.successfully = Passwort geändert
+password.change = Passwort ändern
+password.change.description = Geben Sie das neue Passwort ein, und bestätigen Sie die Eingabe.
+
+back_top = Zum Seitenanfang
+
+fieldNumpad = Nummer eingeben
+digitpad.text = Bitte Kopfhörer benutzen
+gallery.edit = ~
+gallery.send = Ok
+
+specText.img 		= Berühren zum Vergrössern
+specText.picture 	= Berühren zum Vergrössern
+specText.audio 	= Berühren zum Starten und Stoppen
+specText.video 	= Berühren zum Starten und Stoppen
+specText.film 		= Berühren zum Starten und Stoppen
+specText.volume-up = Berühren zum Starten und Stoppen
+specText.text 		=
+specText.html 		=
+specText.list-alt =
+
+constraint.required = Erforderlich
+constraint.min = Minimum: {0}
+constraint.max = Maximum: {0}
+constraint.minLength = Minimum length: {0}
+constraint.maxLength = Maximum length: {0}
+constraint.email = Email
+format.date = Datum (''{0}'')
+format.numeric = Zahl
+format.real = Dezimal
+error.invalid = Ungültiger Wert
+error.required = Dieses Feld ist erforderlich
+error.number = Es wird ein nummerischer Wert benötigt
+error.real = Es wird eine Dezimalzahl Wert benötigt
+error.real.precision = Real number value with no more than {0} digit(s) including {1} decimal(s) expected
+error.min = Must be greater or equal to {0}
+error.min.strict = Must be strictly greater than {0}
+error.max = Must be less or equal to {0}
+error.max.strict = Must be strictly less than {0}
+error.minLength = Minimum length is {0}
+error.maxLength = Maximum length is {0}
+error.email = Valid email required
+error.pattern = Must satisfy {0}
+
+doc = Text
+video = Video
+audio = Audio
+img = Bild
+
+format.boolean = 
+
+form.fixErrors = Die Tabletguideverwaltung kann leider Ihre eingabe so nicht speichern. Bitte überprüfen Sie Ihre Eingaben noch einmal. Kontrollieren Sie vor allem, ob diese Nummer bereits existiert.
+form.error.number_already_exists = Diese Nummer existiert bereits.
+
+
+name_ex 	= Titel deutsch
+name_ex_de 	= Titel englisch
+name_cat	= Titel deutsch
+name_cat_en	= Titel englisch
+date_begin = Eröffnung
+date_end = Schliessung
+status_id = Ausstellung veröffentlichen
+comment = Text deutsch
+comment_en = Text englisch
+preview = Vorschau
+no_preview = Kein Vorschau verfügbar
+
+login = Login
+logout = Logout
+
+error.404.title= Element nicht gefunden
+error.404.description= Die angeforderte Ressource wurde auf diesem Server nicht gefunden
+
+menu.home 		= Hauptseite
+menu.impressum = Impressum
+impressum.title = title
+impressum.description = desc
+
+export.title = Export der Applikationsdaten
+export.description = Hiermit können Sie die Konfiguration des Museumsguides exportieren, um diese auf einem anderen Server zu importieren.
+export.button = Datenbank exportieren
+export.button.image = Media exportieren
+
+email.header = Tabletguide des Völkerkundemuseums der Universität Zürich
+email.opening = Liebe/Lieber
+email.text1 = Mit dem unten stehenden Login können Sie sich nun in der Tabletguideverwaltung auf http://130.60.62.221/admin anmelden.
+email.text2 = Bei Fragen oder Anregungen wenden Sie sich am besten an Wolfgang Wohlwend wohlwend@vmz.uzh.ch oder Raphael Ochsenbein raphael@akehir.com .
+email.closing = Mit freundlichen Grüssen,
+email.signature = Das Team des Tabletguides
+
+
+
+exhibition.title = Inhalt
+exhibition.title.edit = Inhalt bearbeiten
+
+exhibition.list.title = Ausstellungsmanagement
+exhibition.list.overview = Übersicht Ausstellungen
+
+exhibition.file = Ausstellungsbilder.
+exhibition.file.title = Titelbild.
+exhibition.file.title.help = Bitte wählen Sie ein Titelbild mit der Auflösung von 846 x 479 pixeln aus.
+exhibition.file.menu = Menübild
+exhibition.file.menu.help =Bitte wählen Sie ein Menübild mit der Auflösung von 844 x 320 pixeln aus.
+
+cat.title = Kategorien
+cat.title_en = Kategorien Englisch
+cat.overview = Übersicht Kategorien
+cat.add = Hinzufügen
+cat.file.deleted.successfully = Erfolgreich gelöscht.
+cat.edited.successfully = Erfolgreich eingefügt.
+cat.file.added.successfully = Datei erfolgreich eingefügt.
+cat.created.successfully = Die Kategorie wurde erfolgreich erstellt.
+
+admin.title = Administrationsoberfläche für den Tabletguide des Völkerkundemuseums der Universität Zürich.
+admin.intro = Willkommen zum Backend des Tabletguides! Eine Anleitung zur Benützung des Guides finden Sie im Menü oben rechts.

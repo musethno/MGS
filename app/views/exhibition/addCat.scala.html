@@ -1,0 +1,41 @@
+@(myForm: Form[ExhibitionCat], sub: Seq[(String,String)], types: Seq[(String,String)], id: Long)(implicit flash:Flash)
+ 
+
+
+@import helper._
+@implicitField = @{ FieldConstructor(fieldConstructor.f) }
+
+@main(Messages("")) {
+
+
+	@if(myForm.hasErrors) {
+        <div class="alert alert-danger">
+            <p>@Messages("form.fixErrors")</p>
+        </div>
+    }
+	
+
+
+<div class="col-md-8">
+<h3>@Messages("exhibition.list.overview")</h3>
+
+
+	<form method="post" class="form-horizontal" role="form" action="@routes.Exhibitions.insertSub(id)">
+
+	@inputText(myForm("name"), '_label -> "name_cat")
+	@inputText(myForm("name_en"), '_label -> "name_cat_en")
+	@inputText(myForm("number"))
+	@select(myForm("sub"), sub)
+	@select(myForm("type_id"), types)
+
+		
+		<div class="actions">
+            <input type="submit" class="btn btn-primary" value="@if(id>0){@Messages("edit")}else{@Messages("add")}">
+            <a href="@routes.Exhibitions.edit(id)" class="btn btn-default">@Messages("cancel")</a>
+        </div>	
+
+	</form>
+</div>
+
+
+}

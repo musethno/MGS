@@ -1,0 +1,87 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# l8n
+POST /locale                        controllers.Application.updateLocale()
+# Authentication
+GET     /login									controllers.Application.login
+POST    /login									controllers.Application.authenticate
+GET     /logout								controllers.Application.logout
+
+# front end
+GET		/										controllers.Application.index
+GET 		/menu/:id 							controllers.Application.menu(id: Long)
+GET 		/submenu/:id						controllers.Application.submenu(id: Long)
+GET 		/detail/:id							controllers.Application.detail(id: Long)
+GET		/gallery/:id/:gid					controllers.Application.gallery(id: Long, gid: Long)
+
+# static pages
+GET		/impressum 							controllers.Application.impressum
+
+
+POST		/detail								controllers.Application.detailByNumber
+GET 		/nr/:nr 								controllers.Application.detailByNumberGET(nr: Long)
+POST 		/nr/exists 							controllers.Application.numberExists
+
+# back end
+GET		/admin 								controllers.Admins.index
+GET 		/admin/doc 							controllers.Admins.docs
+GET		/admin/exportimport				controllers.Admins.eximport
+
+## user
+GET		/admin/user 						controllers.Users.list
+GET		/admin/user/:id/edit 			controllers.Users.edit(id: Long)
+POST		/admin/user/:id/edit 			controllers.Users.update(id: Long)
+GET		/admin/user/add		 			controllers.Users.add
+POST		/admin/user/insert 				controllers.Users.insert
+
+GET 		/admin/user/changePassword 	controllers.Users.changePassword
+POST 		/admin/user/changePassword 	controllers.Users.insertPassword
+
+GET		/admin/user/:id/delete 			controllers.Users.delete(id: Long)
+
+## Exhibitions
+GET		/admin/exhibition					controllers.Exhibitions.list
+GET		/admin/exhibition/:id/edit 	controllers.Exhibitions.edit(id: Long)
+POST		/admin/exhibition/:id/edit 	controllers.Exhibitions.update(id: Long)
+GET		/admin/exhibition/add			controllers.Exhibitions.add
+POST		/admin/exhibition/add	 		controllers.Exhibitions.insert
+
+
+## cat
+GET 		/admin/exhibition/:id/add 		controllers.Exhibitions.addSub(id: Long)
+POST     /admin/exhibition/:id/add 		controllers.Exhibitions.insertSub(id: Long)
+
+GET 		/admin/cat/:id/:id2/edit 		controllers.Exhibitions.editSub(id: Long, id2: Long)
+POST 		/admin/cat/:id/:id2/edit 		controllers.Exhibitions.updateSub(id: Long, id2: Long)
+
+POST 		/admin/cat/:id/:id2/:fid/file 		controllers.Exhibitions.insertFile(id: Long, id2: Long, fid: Long)
+POST 		/admin/exhib/:id/:typ/file 	controllers.Exhibitions.insertFileEx(id: Long, typ: Long)
+GET		/admin/cat/:id/:id2/:fid/deleteF	controllers.Exhibitions.deleteFile(id: Long, id2: Long, fid: Long)	
+
+POST 		/admin/:id/upload 				controllers.Exhibitions.upload(id: Long)
+GET		/admin/cat/:id/:id2/:id3/delete	controllers.Exhibitions.deleteGallery(id: Long, id2: Long, id3: Long)	
+
+GET		/admin/exhbition/:id/delete 					controllers.Exhibitions.delete(id: Long)
+GET 		/admin/exhibition/move/:id/:direction		controllers.Exhibitions.move(id: Long, direction: Boolean)
+GET 		/admin/cat/move/:id/:direction/:parent				controllers.Exhibitions.moveC(parent: Long, id: Long, direction: Boolean)
+
+# Backups
+GET 		/admin/backups/db 								controllers.Backups.dumpDB
+GET 		/admin/backups/images 							controllers.Backups.dumpImages
+
+
+
+## galleries
+GET 		/admin/gallery/:id/:sid/:pid/:d/move/		controllers.Galleries.move(id: Long, sid: Long, pid: Long, d: Boolean)
+POST 		/admin/gallery/:id/edit 						controllers.Galleries.update(id: Long)
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               					controllers.Assets.at(path="/public", file)
+
+
+
+
+

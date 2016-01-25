@@ -1,0 +1,85 @@
+@(exhibition: Exhibition, menus: List[Exhibition], types: Seq[(Option[Long], String, Option[String])], formatter: java.text.DecimalFormat)(implicit currentLang: Lang)
+
+
+
+@mainP("",routes.Application.menu(exhibition.sub.get).toString){
+	
+<div class="row">
+			@if(exhibition.file2.isDefined){
+			<img class="title-img" src="/detail/@exhibition.file2.get">
+			}
+</div>
+
+
+<div class="row">
+			
+<ol class="breadcrumb" style="margin-bottom: 0px">
+  <li>
+
+			<span class="de">
+						@exhibition.name
+			</span>
+			<span class="en">
+						@exhibition.name_en
+			</span>
+
+  </li>
+  <li>
+			<span class="de">
+						@exhibition.name
+			</span>
+			<span class="en">
+						@exhibition.name_en
+			</span>
+  </li>
+</ol>
+
+
+
+</div>
+
+<!--
+<div class="row">
+	<div class="col-xs-12 col-md-12 smenu-stitle text-center">
+		@Html(Messages("digitpad.text"))
+	</div>
+</div>
+-->
+
+<div class="row smenu-body">
+@menus.map{m=>
+
+<div class="row @if(m.name_en.isEmpty){de} @if(m.name.isEmpty){en}">
+
+
+	<div class="hidden-xs col-md-1"></div>
+	<a href="@routes.Application.detail(m.id.get)" class="col-xs-12 col-md-10 smenu-element text-center">
+	
+		<span class="col-xs-2 col-md-2 text-right">@if(m.number.isDefined){@formatter.format(m.number.getOrElse(0))}</span>
+		<span class="col-xs-2 col-md-1">@if(m.type_id.isDefined){
+			<span class="glyphicon">
+			<img style="height: 30px; margin-top: -7px;" src="/assets/img/icons/blau/@(types.filter((a: (Option[Long], String, Option[String])) => a._1==m.type_id).head._3.getOrElse("")).png"></span>
+		}</span>
+        <span class="de col-xs-8 col-md-9 text-left smenu-text">@m.name</span>
+        <span class="en col-xs-8 col-md-9 text-left smenu-text">@m.name_en</span>
+	</a>
+	<div class="hidden-xs col-md-1"></div>
+	
+	
+</div>
+     
+}
+</div>
+
+<div class="row" style="display:none">
+    <br />
+	<div class="col-xs-5 col-md-5">
+	</div>
+	<a class="col-xs-2 col-md-2 myButton btn-outline-inverse" style="margin-top:30px" href="@routes.Application.menu(exhibition.sub.get)">@Messages("back")</a>
+	<div class="col-xs-5 col-md-5">
+	</div>
+</div>
+
+
+}
+

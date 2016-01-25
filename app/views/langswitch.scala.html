@@ -1,0 +1,61 @@
+@()(implicit currentLang: Lang)
+
+
+<!--Language Switch Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <b class="modal-title">@Messages("selectlanguage")</b>
+      </div>
+      <div class="modal-body">
+      <div class="form-group">
+        @helper.form(action = routes.Application.updateLocale()) {
+			
+				<select name="locale" class="form-control">
+					@play.api.i18n.Lang.availables(play.api.Play.current).map { lang =>
+						<option value="@lang.code" @(if(currentLang.code == lang.code) "selected")>@Messages("lang." + lang.code)</option>
+					}
+				</select>
+		
+			<br/>
+			<input class="btn btn-primary btn-block" type="submit" value=@Messages("change")></input>
+
+		</div>
+
+<script> 
+
+$(document).ready(function(){
+
+var langcode = "@currentLang.code"; 
+
+console.log(langcode)
+
+if (langcode=="en-US") {
+	$(".de").hide();
+	$(".en").show();	
+}
+
+else {
+	$(".en").hide();
+	$(".de").show();
+}
+	
+});
+
+
+
+
+</script> 
+
+}
+      </div>
+
+    </div>
+
+  </div>
+</div>
+

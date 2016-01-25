@@ -1,0 +1,47 @@
+@(users: List[User])(implicit flash:Flash)
+
+@main("user") {<!-- START THE FEATURETTES -->
+
+  @if(flash.get("success")) {<p class="alert alert-success">@Messages(flash.get("success").get)</p>}
+
+      <hr class="featurette-divider">
+
+      <div class="featurette">
+          <h2 class="featurette-heading">Benutzerverwaltung</h2>
+
+          <p>
+            <a class="btn btn-primary" href="@routes.Users.add">@Messages("user.add")</a>
+            <a class="btn btn-default" href="@routes.Users.changePassword">@Messages("password.change")</a>
+          </p>
+
+          @if(users.size>0){
+          <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Benutzername</th>
+                  <th>Email</th>
+                  <th colspan="2"></th>
+                </tr>
+              </thead>
+              <tbody>
+                @users.map{user =>
+                <tr>
+                  <td>@user.id.get</td>
+                  <td>@user.name</td>
+                  <td>@user.email</td>
+                  <td><a href="@routes.Users.edit(user.id.get)" class="btn btn-primary">Bearbeiten</a></td>
+                  <td><a class="btn btn-danger" href="@routes.Users.delete(user.id.get)">Entfernen</a></td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          }else{
+          <p>@Messages("no_num_row")</p>
+        }
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+}

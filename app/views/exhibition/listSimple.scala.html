@@ -1,0 +1,38 @@
+@(values: List[Exhibition])
+
+@main("exhibition"){
+
+<ol class="breadcrumb">
+  <li>@Messages("exhibition.list.overview")</li>
+</ol>
+
+	<p><a href="@routes.Exhibitions.add" class="btn btn-primary">@Messages("add")</a></p>
+
+	@if(values.size>0){
+	<table class="table table-striped">
+		<tr>
+			<th>@Messages("name")</th>
+			<th></th>
+			<th></th>
+		</tr>
+	@values.map{v=>
+		<tr>
+			<td>@v.name</td>
+			<td><a class="btn btn-default" href="@routes.Exhibitions.edit(v.id.get)">@Messages("view")</a></td>
+			<td>
+				<a class="btn btn-default" href="@routes.Exhibitions.move(v.id.get, true)">
+					<span class="glyphicon glyphicon-arrow-down"></span>
+				</a>
+				
+				<a class="btn btn-default" href="@routes.Exhibitions.move(v.id.get, false)">
+					<span class="glyphicon glyphicon-arrow-up"></span>
+				</a>
+			</td>
+		</tr>
+	}
+	</table>
+	}else{
+		<p><i>@Messages("no_num_row")</i></p>
+	}
+
+}

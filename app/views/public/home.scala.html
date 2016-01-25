@@ -1,0 +1,40 @@
+@(exhibitions: List[Exhibition])(implicit currentLang: Lang)
+
+@mainP(""){
+	
+
+	
+
+
+@exhibitions.map{e=>
+
+
+<div class="row">
+
+
+	<div class="col-xs-12 col-md-12 home">
+		<a href="@routes.Application.menu(e.id.get)" >
+		
+			@if(e.file.isDefined){
+			<img class="col-xs-12-p col-md-12 title-img" src="@e.file.get">
+			}
+		</a>
+		
+			<div class="col-xs-12 col-md-12 text-center" style="color: white; font-size: 0.9em">Zum Fortsetzen Bild berühren</div>
+
+	</div>
+</div>
+}
+
+
+
+
+
+
+
+
+
+}
+
+
+

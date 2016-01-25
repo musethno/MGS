@@ -1,0 +1,57 @@
+ @(message: String)
+
+@main("doc") {<!-- START THE FEATURETTES -->
+
+      <hr class="featurette-divider">
+
+      <div class="col-md-12 col-xs-12">
+          <h2 >Anleitung</h2>
+
+          <h3 >Vorgehen zur Erstellung einer neuen Ausstellung</h3>
+          <p>Zum Erstellen einer neuen Ausstellung können Sie im <a href="@routes.Exhibitions.list">Ausstellungsmanagement</a> einfach auf den einzigen Button drücken und die Ausstellungsdaten eingeben.</p>
+          <p>Es ist erforderlich, einen Ausstellungstitel anzugeben.</p>
+          <p>Sie müssen kein Eröffnungsdatum oder Schliessungsdatum angeben.</p>
+          <p>Über das Häckchen "Ausstellung veröffentlichen" können Sie festlegen, ob die Ausstellung im Frontend zu sehen ist, oder nicht.</p>
+          <p>Im Feld "@Messages("comment")" können Sie sich Notizen speichern.</p>
+          <p>Die Titelbilder der Ausstellung können Sie hinzufügen, nachdem die Ausstellung hinzugefügt wurde, indem Sie im <a href="@routes.Exhibitions.list">Ausstellungsmanagement</a> auf Ausstellung bearbeiten klicken.</p>
+
+          <h3 >Vorgehen zum Bearbeiten der Ausstellung</h3>
+          <p>Im <a href="@routes.Exhibitions.list">Ausstellungsmanagement</a> können Sie die Ausstellung, die bearbeitet werden soll ausgewählt werden. Danach haben Sie die Möglichkeit, neue Inhalte hinzuzufügen. </p>
+
+          <h3 >Vorgehen zum Hinzufügen eines Inhaltes</h3>
+          <p>Wenn Sie auf den Button zum Bearbeiten einer Ausstellung geklickt haben, können Sie neue Inhalte hinzufügen, indem Sie unter "@Messages("cat.title")" auf den Button "@Messages("cat.add")" klicken, um einen neuen Inhalt hinzuzufügen.</p>
+          <p>Dabei kann es sich entweder um einen Menüeintrag, oder gleich um einen spezifischen Inhalt handeln.</p>
+          <p class="text-danger">Hierbei ist es wichtig, dass das Feld "@Messages("sub")" korrekt ausgefüllt wird, dieses lässt sich nicht mehr verändern.</p>
+          <p>Alle anderen Werte können Sie später noch bearbeiten, wenn Sie die Inhalte hinzufügen.</p>
+
+          <h3>Die Verschiedenen Inhaltstypen des Tabletguides</h3>
+          <p>Um einen Inhalt zu bearbeiten, können Sie den Inhalt in einer Ausstellung unter "@Messages("cat.title")" finden, und auf den Button "@Messages("view")" klicken.</p>
+          <p>Dort haben Sie die Möglichkeiten, die Multimediainhalte hinzuzufügen und die Legenden anzugeben.</p>
+          <p>Bei allen Inhaltstypen, die kein eigenes Textmodul haben, kann über das Feld "@Messages("comment")" eine Legende eingegeben werden, die auch im Frontend unter dem jeweiligen Inhalt angezeigt wird.</p>
+
+          <h4>Bild</h4>
+          <p>Mit dem Modul Bildergallerie können Sie eine Gruppe von Bildern hinzufügen, und auch einzelne Legenden zu einem Bild definieren.</p>
+          <p>Format: jpg</p>
+
+          <h4>Film</h4>
+          <p>Das Film-Modul dient dazu, Filme zu speichern und weisse Schimmel zu schreiben.</p>
+          <p>Über "@Messages("file.associated") kann ein Hintergrundbild oder eine Vorschau für den Film festgelegt werden, dies ist aber nicht zwingend Notwendig.</p>
+          <p>Format: mp4</p>
+
+          <h4>Ton</h4>
+          <p>Der Tabletguide bietet Inhen die Möglichkeit, Audiodateien abzuspielen, über das Ton-modul.</p>
+          <p>Format: mp3</p>
+
+          <h4>Text</h4>
+          <p>Im Textfeld haben Sie die Möglichkeit, einen beliebigen Text einzugeben und zu formatieren. Da das Endformat nicht genau gleich wie der gezeigte Text im Feld ist, empfiehlt es sich, das Resultat über die Vorschau zu kontrollieren.</p>
+
+          <h4>HTML</h4>
+          <p>Im HTML-Feld kann direkt html code in den Tabletguide eingefügt werden. Dies ist ein Feld mit erweiterter Funktionalität, und sollte nur verwendet werden, wenn es nicht möglich ist, einen anderen Inhaltstypen auszuwählen.</p>
+
+          <p></p>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+    }

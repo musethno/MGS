@@ -1,0 +1,13 @@
+@(user: User_e, password: String)
+
+@Messages("email.opening") @user.name,
+
+@Messages("email.text1")
+
+user: @user.email 
+password: @password
+
+@Messages("email.text2")
+
+@Messages("email.closing")
+@Messages("email.signature")

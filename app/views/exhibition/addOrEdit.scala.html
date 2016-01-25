@@ -1,0 +1,157 @@
+@(myForm: Form[Exhibition]
+, sub: Seq[(String,String)]
+, types: Seq[(Option[Long], String, Option[String])]
+, id: Long = 0
+, values: Option[Exhibition] = None, cat: Option[List[Exhibition]] = None)(implicit flash:Flash)
+ 
+
+
+@import helper._
+@implicitField = @{ FieldConstructor(fieldConstructor.f) }
+
+@main(Messages("")) {
+	<div class="row">
+		<div class="col-md-12">
+			@if(flash.get("success")) {
+				<p class="alert alert-success">
+					@Messages(flash.get("success").get)
+				</p>
+			}
+			@if(myForm.hasErrors) {
+			<div class="alert alert-danger">
+				<p>
+					@Messages("form.fixErrors")
+				</p>
+			</div>}
+			<ol class="breadcrumb">
+				<li><a href="@routes.Exhibitions.list">@Messages("exhibition.list.overview")</a></li>
+				<li>@Messages("cat.overview")</li>
+			</ol>
+			<form method="post" class="form-horizontal" role="form" action="@if(id>0){@routes.Exhibitions.update(id)}else{@routes.Exhibitions.insert}">
+				@inputText(myForm("name"), '_label -> "name_ex")
+				@inputText(myForm("name_en"), '_label -> "name_ex_de")
+				@inputText(myForm("date_begin"))
+				@inputText(myForm("date_end"))
+				@checkbox(myForm("status_id"))
+				@textarea(myForm("comment"))
+				<div class="actions col-md-offset-3 col-md-9">
+					<input type="submit" class="btn btn-primary" value="@if(id>0){@Messages("edit")}else{@Messages("add")}">
+					<a href="@routes.Exhibitions.list" class="btn btn-default">@Messages("cancel")</a>
+					@if(id>0){
+						<a href="@routes.Exhibitions.delete(id)" class="btn btn-danger">@Messages("delete")</a>
+					}
+				</div>
+			</form>
+		</div>
+	</div>
+
+	@if(id>0){
+		<div class="row">
+			<div class="col-md-12">
+				<h2>@Messages("cat.title")</h2>
+				<p>
+					<a class="btn btn-primary" href="@routes.Exhibitions.addSub(id)">
+						@Messages("cat.add")
+					</a>
+				</p>
+
+
+			<!-- SHOW LIST OF ENTRIES -->
+			@if(cat.isDefined){
+				<table class="table table-striped table-hover">
+					<tr>
+						<th>
+							@Messages("title")
+						</th>		
+						<th>
+							@Messages("number")
+						</th>
+						<th>
+							@Messages("type_id")
+						</th>
+						<th>
+							
+						</th>
+						<th>
+							
+						</th>
+					</tr>
+					@cat.get.map{c=>
+					<tr>
+						<td>
+							@if(c.sub.isDefined && c.sub.get!=id){
+								<span class="glyphicon glyphicon-chevron-right"></span>
+							}
+							@c.name <br/> @c.name_en
+						</td>						
+						<td>
+							@c.number.getOrElse("")
+						</td>
+						<td>
+							<span class="glyphicon glyphicon-@(types.filter((a: (Option[Long], String, Option[String])) => a._1==c.type_id).head._3.getOrElse(""))">
+								
+							</span>
+						</td>
+					<!-- SHOW EDIT BUTTON -->
+					<td>
+						<a class="btn btn-primary" href="@routes.Exhibitions.editSub(c.id.get, id)">
+							@Messages("view")
+						</a>
+					</td>
+					<td>
+						<a class="btn btn-default" href="@routes.Exhibitions.moveC(id, c.id.get, true)">
+							<span class="glyphicon glyphicon-arrow-down"></span>
+						</a>
+						<a class="btn btn-default" href="@routes.Exhibitions.moveC(id, c.id.get, false)">
+							<span class="glyphicon glyphicon-arrow-up"></span>
+						</a>
+					</td>
+				</tr>
+								}
+			</table>
+}
+	</div>
+	</div>	
+}
+
+<!-- FILE UPLOADER -->
+
+@if(id>0){
+<div class="row">
+	<div class="col-md-12">
+	<h2>@Messages("exhibition.file")</h2>
+</div>
+
+<div class="row">
+	<div class="col-md-6">
+
+	<h3>@Messages("exhibition.file.title")</h3>
+	@form(action = routes.Exhibitions.insertFileEx(id,1), 'enctype -> "multipart/form-data") {
+		<input type="file" name="file">
+		<p class="help-block">@Messages("exhibition.file.title.help")</p>
+		<input class="btn btn-primary" type="submit" value="@Messages("add")">
+	}
+
+	@if(values.isDefined && values.get.file.isDefined){
+		<img class="col-md-12" src="@values.get.file.get">
+	}
+	</div>
+
+	<div class="col-md-6">
+
+	<h3>@Messages("exhibition.file.menu")</h3>
+	@form(action = routes.Exhibitions.insertFileEx(id,2), 'enctype -> "multipart/form-data") {
+		<input type="file" name="file">
+		<p class="help-block">@Messages("exhibition.file.menu.help")</p>
+		<input class="btn btn-primary" type="submit" value="@Messages("add")">
+	}
+
+	@if(values.isDefined && values.get.file2.isDefined){
+		<img class="col-md-12" src="@values.get.file2.get">
+	}
+
+	</div>
+</div>
+}
+
+}

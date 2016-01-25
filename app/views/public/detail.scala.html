@@ -1,0 +1,596 @@
+@(values: Exhibition, types: Seq[(Option[Long], String, Option[String])], formatter: java.text.DecimalFormat)(implicit currentLang: Lang)
+@mainP(""
+,(values.level match{
+	case 3 => routes.Application.submenu(values.sub.get)
+	case 2 => routes.Application.menu(values.sub.get)
+	case _ => routes.Application.index
+}).toString
+){
+
+
+			@if(values.type_id.isDefined){
+				@values.type_id.get match{
+				
+					case 1 => {
+					
+					<div class="row">
+						<div class="col-md-12 col-xs-12-p cms-element" >
+							<div class="col-md-12 col-xs-12-p media-main" >
+                                <div id="item-text" class="col-md-12 col-xs-12-p text-left">
+									<span class="de">@Html(values.comment.getOrElse(""))</span>
+									@if(values.comment_en.isDefined){<span class="en">@Html(values.comment_en.getOrElse(""))</span>}
+									</div>
+                    }
+
+					case 6 => {
+						<div class="row">
+							<div class="col-md-12 col-xs-12-p cms-element" >
+								<div class="col-md-12 col-xs-12-p media-main" >
+                                <div id="item-text" class="col-md-12 col-xs-12-p text-left"><span class="de">@Html(values.comment.getOrElse(""))</span>
+@if(values.comment_en.isDefined){<span class="en">@Html(values.comment_en.getOrElse(""))</span>}</div>
+                    }
+
+					case 2 => {
+					
+				<div class="row">
+	<div class="col-md-12 col-xs-12-p cms-element" >
+		<div class="col-md-12 col-xs-12-p media-main" >
+					}
+
+					case 3 => {
+					<div class="row" style="height: 100%">
+	<div class="col-md-12 col-xs-12-p cms-element" style="height: 100%">
+		<div class="col-md-12 col-xs-12-p media-main"  style="height: 100%">
+					
+					
+    <!-- Demo styles -->
+    <style>
+
+    html, body {
+        position: relative;
+        height: 100%;
+    }
+	
+
+    body {
+        background: #000;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  
+        color:#000;
+        margin: 0;
+        padding: 0;
+    }
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+	
+
+
+    .gallery-top .swiper-slide {
+		
+        background-size: 100%;
+        background-position: center;
+    }
+	
+	.gallery-thumb. swiper-slide {
+        background-size: cover;
+        background-position: center;
+    }
+	
+    .gallery-top {
+        height: 30%;
+        width: 100%;
+    }
+    .gallery-thumbs {
+        height: 20%;
+        box-sizing: border-box;
+        padding: 10px 0;
+    }
+    .gallery-thumbs .swiper-slide {
+        width: 25%;
+        height: 100%;
+        opacity: 0.4;
+    }
+    .gallery-thumbs .swiper-slide-active {
+        opacity: 1;
+			    -webkit-transition-duration: 1s; /* Safari */
+    transition-duration: 1s;
+    }
+    
+    </style>
+	
+	<div class="gallery-container" style="height: 100%">
+		
+	
+					<div class="swiper-container gallery-top" style="height: 80%">
+					
+					       <div class="swiper-wrapper">
+										<div class="swiper-slide" style="
+  height: 100%;
+	font-size: 6vw;
+    margin-top: 0;
+    text-align: center;
+    top: 80px;
+    width: 100%;">
+								@if(values.number.isDefined){@formatter.format(values.number.get)} @if(values.name_en.isDefined){<div class="en">@values.name_en</div>}<div class="de">@values.name</a></div>
+							</div>
+
+					
+					
+					
+				
+						@defining(Exhibition.Gallery.list(values.id.get)) { gallery=>
+						@for(i <- 0 to gallery.size-1){
+
+							@if(i%2==0){
+							
+						<!-- begin row -->
+							}
+							
+						@if(gallery(i).id.isDefined){
+						<div class="gallery_caption swiper-slide" style="margin-top: 22px; width: 100px; text-align: center;">
+							@if(gallery(i).filename.isDefined){
+								@Html(gallery(i).caption.getOrElse(""))
+								</div>
+								<div class="gallery_caption swiper-slide" style="margin-top: 22px; width: 100px; text-align: center;">
+
+								<div> <img src="/data-museum/@gallery(i).filename" id="@gallery(i).id" alt="@Html(gallery(i).caption.getOrElse(""))" title="@Html(gallery(i).caption.getOrElse(""))" />
+								</div>
+							}else{
+
+								@Html(gallery(i).caption.getOrElse(""))
+							
+								
+							}
+							
+							
+						
+							<!--@Html(gallery(i).caption.getOrElse(""))-->
+						</div>
+						}
+							
+<!--						@if(gallery(i).caption.isDefined){
+						<div class="swiper-slide">
+						<div style="max-height: 57%; width: 91%;">
+							@if(gallery(i).filename.isDefined){	
+								<div class="row" style="text-align: center; width: 100%; margin-bottom: 21px; margin-left: 0; margin-right: 0;" >
+									<img src="/data-museum/@gallery(i).filename" id="@gallery(i).id" alt="@Html(gallery(i).caption.getOrElse(""))" title="@Html(gallery(i).caption.getOrElse(""))" />
+								</div>
+							}
+						<div style="text-align: center">
+							@Html(gallery(i).caption.getOrElse(""))
+						</div>
+						</div>
+						</div>
+						
+						}-->
+
+				
+
+							@if((i+1)%2==0 || i==gallery.size-1){
+				
+							}
+							
+						  
+						}}
+						    <!-- If we need pagination -->
+
+
+						   </div></div>
+					
+										<div class="swiper-container gallery-thumbs">
+					
+					       <div class="swiper-wrapper">
+							
+																	<div class="swiper-slide" style="
+  height: 100%;
+
+    margin-top: 0;
+    text-align: center;
+    top: 80px;
+    width: 100%;">
+								
+							</div>
+
+
+
+					
+					
+					
+				
+						@defining(Exhibition.Gallery.list(values.id.get)) { gallery=>
+						@for(i <- 0 to gallery.size-1){
+
+							@if(i%2==0){
+							
+						<!-- begin row -->
+							}
+
+						
+<!--						<div class="swiper-slide">
+							<a class="thumbnail" href="#" title="@gallery(i).caption.getOrElse("&nbsp;")">
+								<img   src="/data-museum/@gallery(i).filename" id="@gallery(i).id" alt="@Html(gallery(i).caption.getOrElse(""))" title="@Html(gallery(i).caption.getOrElse(""))" />
+							</a></div>
+						
+						@if(gallery(i).caption.isDefined){
+						<div class="gallery_caption swiper-slide" style="   width: 200px;">				
+							@Html(gallery(i).caption.getOrElse(""))
+						</div>}-->
+
+						@if(gallery(i).id.isDefined){
+						@if(gallery(i).filename.isDefined){
+						<div class="swiper-slide" style="margin-top: 22px; width: 35px; text-align: center;">
+							<span style=" font-size: 42px; height: 50px; padding-top: 0px; top: 0; width: 50px;">&bull;</span>
+						</div> <div class="swiper-slide" style="margin: 0 auto; margin-top: 22px; width: 75px; text-align: center;">
+
+
+								<div class="thumbnail-circle" style="text-align: center;
+								
+							width: 75px;
+							height: 75px;
+							border-radius: 50%;
+							background-repeat: no-repeat; 
+							background-position: center center; 
+							background-size: cover;
+							background-image: url('/data-museum/@gallery(i).filename');
+								-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+
+	">
+									
+									
+<!--									<img src="/data-museum/@gallery(i).filename" id="@gallery(i).id" alt="@Html(gallery(i).caption.getOrElse(""))" title="@Html(gallery(i).caption.getOrElse(""))" />
+-->								</div>
+							}else{
+								<span style=" font-size: 42px; height: 50px; padding-top: 0px; top: 0; width: 50px;">&bull;</span>
+							}
+							
+							
+						
+							<!--@Html(gallery(i).caption.getOrElse(""))-->
+						</div>
+						}
+						
+		
+						
+								
+
+							@if((i+1)%2==0 || i==gallery.size-1){
+				
+							}
+							
+						  
+						}}
+						    <!-- If we need pagination -->
+
+
+						   </div></div>
+										</div>
+
+    <div class="swiper-pagination"></div>
+    
+    <!-- If we need navigation buttons -->
+    <div class="swiper-button-prev" ></div>
+    <div class="swiper-button-next" ></div>
+    
+    <!-- If we need scrollbar -->
+    <div class="swiper-scrollbar"></div>
+						</div>
+						 </div>
+
+
+
+
+	<script>	
+		var galleryTop = new Swiper('.audio-slides', {
+		nextButton: '.swiper-button-next',
+		prevButton: '.swiper-button-prev',
+		spaceBetween: 10,
+		});
+			
+		var galleryTop = new Swiper('.gallery-top', {
+		nextButton: '.swiper-button-next',
+		prevButton: '.swiper-button-prev',
+		spaceBetween: 10,
+		});
+		
+		var galleryThumbs = new Swiper('.gallery-thumbs', {
+		spaceBetween: 10,
+		centeredSlides: true,
+		slidesPerView: 'auto',
+		touchRatio: 0.2,
+		slideToClickedSlide: true
+		});
+		galleryTop.params.control = galleryThumbs;
+		galleryThumbs.params.control = galleryTop;
+	</script>
+									
+					
+					}
+
+
+
+					case 4 => {
+					
+					<div class="row">
+	<div class="col-md-12 col-xs-12-p cms-element" >
+		<div class="col-md-12 col-xs-12-p media-main" >
+
+
+
+
+								</div></div></div>
+<!-- End Row 1 -->
+		<div id="item-title" class="row" >						
+	<div class="col-md-12 col-xs-12-p cms-element" >
+		<div class="col-md-12 col-xs-12-p media-main">
+										
+
+								@if(values.number.isDefined){@formatter.format(values.number.get)} @if(values.name_en.isDefined){<div class="en">@values.name_en</div>}<div class="de">@values.name</a></div>
+								
+								</div></div></div>
+<!-- End Row 2 -->
+		<div id="audio-container" class="row" ">						
+	<div class="col-md-12 col-xs-12-p cms-element" >
+		<div class="col-md-12 col-xs-12-p media-main" >
+
+
+
+
+
+	@if(values.file.isDefined){
+		<!-- The jPlayer div must not be hidden. Keep it at the root of the body element to avoid any such problems. -->
+		<div id="jquery_jplayer_1" class="cp-jplayer"></div>
+			<div class="cp-wrapper"> <!-- A wrapper to emulate use in a webpage and center align -->
+				<!-- The container for the interface can go where you want to display it. Show and hide it as you need. -->
+				<div id="cp_container_1" class="cp-container">
+					<div id="cp-inner-wrapper">
+						<div class="cp-buffer-holder"> <!-- .cp-gt50 only needed when buffer is > than 50% -->
+							<div class="cp-buffer-1"></div>
+							<div class="cp-buffer-2"></div>
+							</div>
+						<div class="cp-progress-holder"> <!-- .cp-gt50 only needed when progress is > than 50% -->
+							<div class="cp-progress-1"></div>
+							<div class="cp-progress-2"></div>
+						</div>
+						<div class="cp-circle-control"></div>
+						<ul class="cp-controls">
+							<li><a class="cp-play" tabindex="1">play</a></li>
+							<li><a class="cp-pause" style="display:none;" tabindex="1">pause</a></li> <!-- Needs the inline style here, or jQuery.show() uses display:inline instead of display:block -->
+						</ul>
+						<div class="jp-volume-bar">
+							<div class="jp-volume-bar-value"></div>
+						</div>
+					</div>
+				</div>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				/*
+				* Instance CirclePlayer inside jQuery doc ready
+				*
+				* CirclePlayer(jPlayerSelector, media, options)
+				* jPlayerSelector: String - The css selector of the jPlayer div.
+				* media: Object - The media object used in jPlayer("setMedia",media).
+				* options: Object - The jPlayer options.
+				*
+				* Multiple instances must set the cssSelectorAncestor in the jPlayer options. Defaults to "#cp_container_1" in CirclePlayer.
+				*/
+				var myCirclePlayer = new CirclePlayer("#jquery_jplayer_1",
+				{
+					mp3:"@values.file.get"
+				}, {
+					supplied: "mp3",
+					cssSelectorAncestor: "#cp_container_1"
+				});
+			});
+		</script>
+
+					
+	}else{
+		<div class="col-md-12 col-xs-12-p ">
+			<i>@Messages("no_content")</i>
+		</div>
+		}
+		
+	</div>
+
+ </div>
+</div>
+
+					}
+
+
+					case 5 => {
+					
+					<div class="row">
+	<div class="col-md-12 col-xs-12-p cms-element" >
+		<div class="col-md-12 col-xs-12-p media-main" >
+					
+								</div></div></div>
+<!-- End Row 1 -->
+		<div id="item-title" class="row" >						
+	<div class="col-md-12 col-xs-12-p cms-element" >
+		<div class="col-md-12 col-xs-12-p media-main" >
+										
+
+								@if(values.number.isDefined){@formatter.format(values.number.get)} @if(values.name_en.isDefined){<div class="en">@values.name_en</div>}<div class="de">@values.name</a></div>
+								
+								</div></div></div>
+<!-- End Row 2 -->
+		<div id="media-container" class="row" >						
+	<div class="col-md-12 col-xs-12-p cms-element" >
+		<div class="col-md-12 col-xs-12-p media-main" >
+			
+						@if(values.file.isDefined){
+							<video id="videoContent" preload="none" controls class="col-md-12 col-xs-12-p text-center" style="min-height: 62%;" @if(values.file2.isDefined){poster="@values.file2.get"}>
+								<source src="@values.file.get" type="video/mp4">
+								<source src="@values.file.get.substring(0, values.file.get.lastIndexOf(".")).concat(".webm")" type="video/webm">
+								Sorry - your browser cannot display this video.
+							</video>
+						}else{							<div class="col-md-12 col-xs-12-p ">
+								<i>@Messages("no_content")</i>
+							</div>
+						}
+					}
+
+					case _ => {}
+			}
+	}
+
+
+
+
+						@defining(Exhibition.Tour.list(values.id.get)) { tour=>
+						@for(i <- 0 to tour.size-1){
+						@if(tour(i).tournumber.isDefined){
+						<div class="col-md-12 col-xs-12-p tournav" style="font-size: 1.em">
+						
+																Station @tour(i).tournumber von 20
+
+						</div>
+						}
+						
+						<div class="col-md-12 col-xs-12-p tournav">
+						
+			
+
+									@if(tour(i).prev.isDefined){
+									<a href="/detail/@tour(i).prev"><button type="button" class="btn btn-info btn-lg" style="margin-right: 65px">Zurück</button></a>
+									}
+									@if(tour(i).nextcomment.isDefined){
+
+									
+									<!-- Modal -->
+									
+									<!-- Trigger the modal with a button -->
+									
+										
+									<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#tourModal">Weiter</button>
+									
+								
+
+												<div id="tourModal" class="modal fade" role="dialog">
+												  <div class="modal-dialog">
+												
+													<!-- Modal content-->
+													<div class="modal-content">
+													  <div class="modal-header">
+												
+												
+													  </div>
+													  <div class="modal-body">
+														<p>									<div class="nextcomment">@tour(i).nextcomment</div></p>
+													  </div>
+													  <div class="modal-footer" style="text-align: center">
+												@if(tour(i).tournumber.get == 20){			
+												<a href="http://130.60.62.125/menu/313"><button type="button" class="btn btn-info btn-lg">Ausgang</button></a>
+												} else {
+												<a href="/detail/@tour(i).next"><button type="button" class="btn btn-info btn-lg">Weiter</button></a>
+												}
+													  </div>
+													</div>
+												
+												  </div>
+												</div>
+									} else {
+									@if(tour(i).next.isDefined){
+									
+									<a href="/detail/@tour(i).next"><button type="button" class="btn btn-info btn-lg">Weiter</button></a>
+									
+									}
+									
+									}
+						}
+						}
+		</div>
+
+		</div>
+<!--
+			<div class="col-md-12 col-xs-12-p spec-text">
+			<br />
+			@if(values.type_id.isDefined){
+				@Messages("specText."+types.filter((a: (Option[Long], String, Option[String])) => a._1==values.type_id).head._3.getOrElse(""))
+			} 
+			<br />
+			<br />
+            </div>
+
+-->
+            
+		 <!--
+            <div class="de col-md-12 col-xs-12-p">
+				@if(values.comment.isDefined && values.type_id.isDefined && values.type_id.get!=6 && values.type_id.get!=1){
+					@if(List(4,5).contains(values.type_id.get)){
+						@Html(values.comment.get)
+					}else{
+						@values.comment.get
+					}
+				}
+				<br />
+				<br />
+			</div>
+		@if(values.comment_en.isDefined){
+            <div class="en col-md-12 col-xs-12-p">
+				@if(values.comment.isDefined && values.type_id.isDefined && values.type_id.get!=6 && values.type_id.get!=1){
+					@if(List(4,5).contains(values.type_id.get)){
+						@Html(values.comment_en.get)
+					}else{
+						@values.comment_en.get
+					}
+				}
+				<br />
+				<br />
+			</div>
+		}
+		-->
+
+	</div>
+	
+</div>
+<!--
+<div class="row">
+
+
+			<div class="col-xs-4 col-md-5">
+			</div>
+			<a class="col-xs-4 col-md-2 myButton btn-outline-inverse" style="min-width: 99px;" href="@(
+			values.level match{
+				case 3 => routes.Application.submenu(values.sub.get)
+				case 2 => routes.Application.menu(values.sub.get)
+				case _ => routes.Application.index
+			})">@Messages("back")</a><br>&nbsp;
+			<div class="col-xs-4 col-md-5">
+			</div>
+</div>
+
+   
+
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+		<div class="modal-content">
+			
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3 class="modal-title"></h3>
+			</div>
+			
+			<div class="modal-body">
+			</div>
+	
+			<div class="modal-footer">
+			<br />
+				<button class="btn btn-outline-inverse-menu" data-dismiss="modal">@Messages("close")</button>
+			</div>
+   	
+   	</div>
+  	</div>
+</div>
+
+
+}
+
+
+

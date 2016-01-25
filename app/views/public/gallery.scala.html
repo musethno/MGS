@@ -1,0 +1,31 @@
+@(pic: Gallerys)
+
+
+@mainP(""){
+
+
+
+<div class="row">
+	<div class="col-xs-12 col-md-12 cms-title text-center">
+		@Messages("Gallery.title")
+	</div>
+</div>
+
+
+ 
+			 
+<div class="row swiper-container">
+	<div class="col-xs-12-p col-md-12 cms-element text-center swiper-wrapper">
+		<div class="col-xs-12-p media-main swiper-slide">
+			<div class="col-xs-1 col-md-2">
+			</div>
+			<img class="col-xs-10 col-md-8" src="@pic.filename">
+			<div class="col-xs-1 col-md-2">
+			</div>
+		</div>
+		
+	</div>
+	
+</div>
+
+}

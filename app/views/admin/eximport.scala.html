@@ -1,0 +1,18 @@
+ @(message: String)
+
+@main("eximport") {
+
+      <hr class="featurette-divider">
+      
+      <div class="row">
+      
+      <div class="col-lg-6">
+		<h2>@Messages("export.title")</h2>
+		<p>@Messages("export.description")</p>
+		<p>
+		<a class="btn btn-primary" href="@routes.Backups.dumpDB">@Messages("export.button")</a>
+		<a class="btn btn-primary" href="@routes.Backups.dumpImages">@Messages("export.button.image")</a>
+		</p>
+      </div>
+    </div>
+}
