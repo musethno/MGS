@@ -16,4 +16,4 @@ The MGS runs on the [Play Framework](https://www.playframework.com/). Please ref
 ## Getting Started
 ### Installation
 1. Navigate to the installation directory of your choice. If you install the application outside your /home directory, be sure to fix the file permissions accordingly.
-2. Clone this repository: ```git clone ```
+2. Clone this repository: ```git clone https://github.com/musethno/MGS.git .```
