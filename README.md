@@ -28,5 +28,5 @@ Create a database and database user. Edit the application.conf (/MGS/conf/applic
 1. Navigate to the installation directory of your choice. If you install the application outside your /home directory, be sure to fix the file permissions accordingly. If not, the MGS needs to be run with root privileges, which obviously is a bad idea.
 2. Clone this repository: ```git clone https://github.com/musethno/MGS.git .```
 3. Run the application with: ```./activator play start```
-4. The MGS downloads missing dependencies, compiles (this may take a long time!) and starts the web server, listening by default to 9000
+4. The MGS downloads missing dependencies, compiles and starts the web server, listening by default to 9000. Note that it might take a long time to compile if you run the application for the first time. Afterwards, play will only compile modified files.
 5. In your browser, navigate to [localhost:9000](http://localhost:9000)
