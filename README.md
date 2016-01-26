@@ -10,7 +10,7 @@ The MGS runs on the [Play Framework](https://www.playframework.com/). Please ref
 - Play runs an own web server that listens on a given port (default: 9000). You can use a front-end server for proxying/load balancing. The current version works fine in combination with Apache 2.4.10.
  
 ### Database
-- Play Framework supports a variety of common database systems. The MGS is tested with MySQL 5.5
+- Play Framework supports a variety of common SQL database systems. The MGS is tested with MySQL 5.5
 
 #### Play Framework dependencies
 - The Play Framework, current version tested with Play 2.4.6 ("Damiya")
