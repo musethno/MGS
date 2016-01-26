@@ -18,7 +18,12 @@ The MGS runs on the [Play Framework](https://www.playframework.com/). Please ref
 
 ## Getting Started
 ### Prepare the Database
-Create a database and database user. Edit the application.conf (/MGS/conf/application.conf/) and provide the login credentials for your database.
+Create a database and database user. Edit the application.conf (/MGS/conf/application.conf/) and provide the login credentials for your database:
+
+- db.default.url="jdbc:mysql://localhost/[your-database-name]?characterEncoding=UTF-8"
+- db.default.user="[your-database-user]"
+- db.default.password="[your-database-password]"
+
 ### Installation
 1. Navigate to the installation directory of your choice. If you install the application outside your /home directory, be sure to fix the file permissions accordingly. If not, the MGS needs to be run with root privileges, which obviously is a bad idea.
 2. Clone this repository: ```git clone https://github.com/musethno/MGS.git .```
