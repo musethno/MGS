@@ -8,12 +8,17 @@ The MGS runs on the [Play Framework](https://www.playframework.com/). Please ref
 ### Server
 - The MGS is java based and is therefore cross-platform in theory. The current version has been tested on Debian GNU/Linux 8 "Jessie" only.
 - Play runs an own web server that listens on a given port (default: 9000). You can use a front-end server for proxying/load balancing. The current version works fine in combination with Apache 2.4.10.
+ 
+### Database
+- Play Framework supports a variety of common database systems. The MGS is tested with MySQL 5.5
 
 #### Play Framework dependencies
 - The Play Framework, current version tested with Play 2.4.6 ("Damiya")
 - JDK 8+ (_Note: We're running it sucessfuly with OpenJDK 7_)
 
 ## Getting Started
+### Prepare the Database
+Create a database and database user. Edit the application.conf (/MGS/conf/application.conf/) and provide the login credentials for your database.
 ### Installation
 1. Navigate to the installation directory of your choice. If you install the application outside your /home directory, be sure to fix the file permissions accordingly. If not, the MGS needs to be run with root privileges, which obviously is a bad idea.
 2. Clone this repository: ```git clone https://github.com/musethno/MGS.git .```
