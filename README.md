@@ -17,3 +17,6 @@ The MGS runs on the [Play Framework](https://www.playframework.com/). Please ref
 ### Installation
 1. Navigate to the installation directory of your choice. If you install the application outside your /home directory, be sure to fix the file permissions accordingly.
 2. Clone this repository: ```git clone https://github.com/musethno/MGS.git .```
+3. Run the application with: ```./activator play start```
+4. The MGS compiles and starts the web server, listening by default to 9000
+5. In your browser, navigate to [localhost:9000](http://localhost:9000)
