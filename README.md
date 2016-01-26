@@ -11,12 +11,12 @@ The MGS runs on the [Play Framework](https://www.playframework.com/). Please ref
 
 #### Play Framework dependencies
 - The Play Framework, current version tested with Play 2.4.6 ("Damiya")
-- JDK 8+
+- JDK 8+ (_Note: We're running it sucessfuly with OpenJDK 7_)
 
 ## Getting Started
 ### Installation
 1. Navigate to the installation directory of your choice. If you install the application outside your /home directory, be sure to fix the file permissions accordingly. If not, the MGS needs to be run with root privileges, which obviously is a bad idea.
 2. Clone this repository: ```git clone https://github.com/musethno/MGS.git .```
 3. Run the application with: ```./activator play start```
-4. The MGS compiles and starts the web server, listening by default to 9000
+4. The MGS downloads missing dependencies, compiles and starts the web server, listening by default to 9000
 5. In your browser, navigate to [localhost:9000](http://localhost:9000)
