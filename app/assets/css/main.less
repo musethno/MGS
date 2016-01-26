@@ -1,0 +1,603 @@
+// Variables
+
+@black: #000000;
+@white: #ffffff;
+
+@c1: #4C4D4D;
+//555757;
+//@c2: #848585; // background detail
+@c2: #A1A1A1; // background detail - brighter upon request of designer
+@c3: #292929;
+@red: #DA1933;
+@green: green;
+
+@s1: #565757;
+
+@p1: #151515;
+@p2: #222;
+@p3: #1b1b1b;
+@p4: #1d1d1d;
+@p5: #1a1a1a;
+@p6: #242424;
+@p7: #131313;
+
+@fontbig: 50px; // titles on tablet size
+@fontbigsmall: 25px; // smaller titles on tablet
+@fontmedium: 25px; // text on tablet
+@fontmediumsmall: 20px; // text on mobile
+@fontsmall: 15px; // smaller text on mobile
+
+
+
+// LESS
+html {
+ height: 100%;
+}
+body {
+    font-family: 'latoregular'!important;
+    font-size: 1.7em;
+    height: 100%;
+    background-color: @black;
+    // overflow: hidden;
+}
+
+a{
+    text-decoration:none;
+    color: @black;
+}
+
+a:hover{
+    color: @white;
+    text-decoration:none;
+}
+
+
+.breadcrumb {
+    background-color: #4C4D4D;
+    font-size: 18px;
+    color: #999999;
+    border-radius: 0px;
+}
+
+
+
+.container {
+ 
+  width: auto;
+  //max-width: 680px;
+  padding: 15px 15px 0px 15px;
+  
+}
+
+#content {
+   background: @c2;
+   height: 100%;
+   padding-top: 105px;
+}
+
+.tournav {
+ text-align: center;
+ padding-top: 15px;
+}
+
+.nextcomment {
+ font-size: 5vw;
+}
+
+#item-title {
+ text-align: center;
+ font-size: 6vw;
+}
+.home{
+    background:@black;
+    margin: 0;
+    padding: 0;
+    border:0;   
+}
+
+
+.home a img{
+    width: 100% auto;
+    padding:0;
+    border:0;
+    margin:0;
+}
+
+
+.flex-container {
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  -webkit-justify-content: center; /* Safari */
+  justify-content:         center
+}
+
+.navbar input{
+    background-color: @black;
+}
+
+.navbar{
+	padding-top: 13px;
+    padding-bottom: 5px;
+}
+
+.langbutton{
+    cursor: pointer;
+    height: 47px;
+    border-radius: 30px!important;
+}
+
+
+
+.topmenu-element{
+    height:40px;
+    padding-top:5px;
+    padding-bottom:5px;
+    margin: 0 auto;
+    color: @white;
+}
+
+//.topmenu-element:hover{
+//    background-color: @c1;
+//}
+
+#inputNumpad {
+	border-radius: 30px!important;
+	text-align: center!important;
+}
+.numpad{
+    /*http://lea.verou.me/css3patterns/#carbon
+    OR
+    http://www.patternify.com */
+    background-color: @black;
+    background:
+    linear-gradient(27deg, @p1 5px, transparent 5px) 0 5px,
+    linear-gradient(207deg, @p1 5px, transparent 5px) 10px 0px,
+    linear-gradient(27deg, @p2 5px, transparent 5px) 0px 10px,
+    linear-gradient(207deg, @p2 5px, transparent 5px) 10px 5px,
+    linear-gradient(90deg, @p3 10px, transparent 10px),
+    linear-gradient(@p4 25%, @p5 25%, @p5 50%, transparent 50%, transparent 75%, @p6 75%, @p6);
+    background-color: @p7;
+    background-size: 20px 20px;
+    padding-top:30px;
+	height: 100%;
+}
+
+.digitpad {
+    margin:0px auto;
+    border:3px solid @black;
+    vertical-align:	middle;
+}
+@media (max-width: 500px) {
+  .digitpad {
+	font-size: @fontmedium;
+  }
+}
+@media (min-width: 501px) {
+  .digitpad {
+	font-size: @fontbig;
+	padding-top:.4em;
+	padding-bottom:.4em;
+  }
+}
+.numpadFooter{
+    padding:50px;
+    color:@white;
+}
+@media (max-width: 500px) {
+  .numpadFooter {
+	font-size: @fontsmall;
+  }
+}
+@media (min-width: 501px) {
+  .numpadFooter {
+	font-size: @fontmedium;
+  }
+}
+
+.digitpad-default:hover{
+    //background-color: @red; // according to designer, no hover necessary.
+	color: @black;
+}
+
+.digitpad-default{
+    background-color:@c1;
+}
+.digitpad-container{
+	height: 62%;
+}
+.digitpad-default:after {
+    height: 100%; /*ratio*/
+    display: block;
+    content: '';
+}
+
+.digitpad-danger {
+    background-color:@red;
+}
+
+.digitpad-success {
+    background-color:@green;
+}
+.digitpad-button{
+    background-color:@c1;
+}
+
+
+.menu-header{
+    /*background-color: @black;
+    background-image: url(../img/menu-header.png);
+    background-repeat:no-repeat;
+    background-position:center center;*/
+    background: @black url(../img/home1.png) no-repeat 0px 0px;
+    background-size: cover;
+    height:320px;
+}
+
+
+.menu-element{
+
+    background-color: @c1;
+    color: @white;
+    margin-top: 3px;
+    padding: 20px;
+}
+
+.menu-element:hover{
+    background-color: #6c6d6d;
+    -o-transition:.1s;
+    -ms-transition:.1s;
+    -moz-transition:.1s;
+    -webkit-transition:.1s;
+    /* ...and now for the proper property */
+    transition:.1s;
+}
+
+
+
+.smenu-title{
+    background-color: @c1;
+    padding-top:15px;
+    padding-bottom:15px;
+    margin: 0 auto;
+
+    border-bottom:1px @black dashed;
+    color: @white;
+    /* font */
+    font-weight:bold;
+}
+@media (max-width: 500px) {
+  .smenu-title {
+	font-size: @fontmedium;
+  }
+}
+@media (min-width: 501px) {
+  .smenu-title {
+	font-size: @fontbigsmall;
+  }
+}
+
+.cms-title {
+	padding-bottom: 15px;
+	border-bottom: 5px;
+}
+
+@media (max-width: 500px) {
+  .cms-title {
+	font-size: @fontmedium;
+  }
+}
+@media (min-width: 501px) {
+  .cms-title {
+	font-size: @fontmedium;
+  }
+}
+
+.smenu-stitle{
+    background-color: @c2;
+    padding-top:15px;
+    padding-bottom: 30px;
+    margin: 0 auto;
+    color: @white;
+}
+@media (max-width: 500px) {
+  .smenu-stitle {
+	font-size: @fontsmall;
+  }
+}
+@media (min-width: 501px) {
+  .smenu-stitle {
+	font-size: @fontmediumsmall;
+  }
+}
+
+.smenu-body{
+    background-color: @c2;
+    overflow: -moz-scrollbars-vertical; 
+    overflow-y:scroll !important;
+    overflow-x: hidden;
+    height:100%;
+
+}
+
+.smenu-element{
+    background-color: #afafaf;
+    color: #000000;
+    margin: 3px;
+    padding: 20px;
+}
+
+.smenu-element:hover{
+    background-color: #cecece;
+    -o-transition:.1s;
+    -ms-transition:.1s;
+    -moz-transition:.1s;
+    -webkit-transition:.1s;
+    /* ...and now for the proper property */
+    transition:.1s;
+    
+}
+
+
+
+
+@media (max-width: 500px) {
+  .smenu-element {
+	font-size: @fontmediumsmall;
+  }
+}
+@media (min-width: 501px) {
+  .smenu-element {
+	font-size: @fontmedium;
+  }
+}
+
+
+.smenu-text{
+    margin-left:-15px!important;
+    padding-left:0px!important;
+}
+
+.cms-title{
+    background-color: @c1;
+    //height:80px; // specifying height gives issues with long /multiline text...
+    padding-top:15px;
+    margin: 0 auto;
+    border-top: 5px @black solid;
+    border-bottom:1px @white dashed;
+    color: @white;
+    /* font */
+    font-weight:bold;
+}
+@media (max-width: 500px) {
+  .cms-title {
+	font-size: @fontmedium;
+  }
+}
+@media (min-width: 501px) {
+  .cms-title {
+	font-size: @fontbigsmall;
+  }
+}
+
+.title-img{
+  width: 100%;
+}
+
+
+
+.cms-element{
+    height: auto;
+    background-color: @c2;
+    color: @c3;
+}
+
+.cp-wrapper {
+    padding: 15px;
+}
+
+
+#item-title .cms-element{
+    padding: 15px;
+}
+
+#media-container {
+    padding-top: 1px;
+}
+
+#item-text {
+    padding: 25px 8px 12px 13px;
+    text-align: justify;
+}
+
+#videoContent {
+    padding: 25px 12px;
+}
+
+.media-main{
+    padding-top: 0px;
+}
+
+.back-btn{
+    margin-top:30px;
+}
+
+.fieldNumpad{
+    background-color: @black;
+    color: @white;
+    border: 0px;
+    cursor: pointer;
+}
+
+.glyphicon {
+	margin-left:-30px;
+}
+
+.text-left {
+	padding-left: 10px;
+	line-height: 1.3;
+
+}
+
+.text-center {
+	font-size: @fontmedium;
+	line-height: 1.3;
+}
+/* Overwrite the default to keep the scrollbar always visible */
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: @white;
+    -webkit-box-shadow: 0 0 1px @white;
+}
+
+::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 6px @c1; 
+    border-radius: 10px;
+    background-color: @c1;
+}
+
+.thumbnail {
+  display: block;
+
+  margin-top: 5px;
+  margin-bottom: 0px!important; 
+ line-height: 1.42857143;
+  background-color: rgba(255, 255, 255, 0);
+  border: 1px solid rgba(255, 255, 255, 0);
+
+  -webkit-transition: all .2s ease-in-out;
+          transition: all .2s ease-in-out;
+}
+
+
+
+.gallery-caption {
+    font-size: 7vw;
+    text-align: center;
+    
+}
+
+.gallery-top .swiper-slide {
+    padding: 34px 34px 10px 34px;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+}
+
+.item-title-wrapper{
+    text-align: center;
+}
+
+
+.btn-outline-inverse-menu {
+  color: #fff;
+  background-color: transparent;
+  border-color: #fff;
+}
+.btn-outline-inverse {
+  color: #fff;
+  background-color: transparent;
+  border-color: #fff;
+  margin-top: 20px;
+}
+.btn-lg {
+  font-size: 25px;
+}
+
+.spec-text{
+  color: @white;
+}
+@media (max-width: 500px) {
+  .spec-text{
+	font-size: @fontsmall;
+  }
+}
+@media (min-width: 501px) {
+  .spec-text {
+	font-size: @fontmedium;
+  }
+}
+
+.modal-content {
+  position: relative;
+  background-color: @c1;
+  border: 1px solid #999999;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  background-clip: padding-box;
+  outline: none;
+}
+
+.modal-dialog{
+  top: 10%;
+  width: 80%;
+  margin: auto;
+  color: @white;
+}
+.modal-title{
+  color: @white;
+  font-weight: bold;
+}
+@media (max-width: 500px) {
+  .modal-title {
+	font-size: @fontmedium;
+  }
+}
+@media (min-width: 501px) {
+  .modal-title {
+	font-size: @fontbigsmall;
+  }
+}
+.close{
+	opacity: 1;
+	color: @white;
+}
+@media (max-width: 500px) {
+  .close{
+	font-size: @fontmedium;
+  }
+}
+@media (min-width: 501px) {
+  .close {
+	font-size: @fontbigsmall;
+  }
+}
+.col-xs-12-p {
+  position: relative;
+  min-height: 1px;
+  padding-right: 5px;
+  padding-left: 5px;
+  float: left;
+  width: 100%;
+}
+
+.flash{
+	background-color: #FF3300;
+	
+	-moz-animation: flash 1s ease-out;
+	-moz-animation-iteration-count: 1;
+
+	-webkit-animation: flash 1s ease-out;
+	-webkit-animation-iteration-count: 1;
+
+	-ms-animation: flash 1s ease-out;
+	-ms-animation-iteration-count: 1;
+}
+
+.en {
+	display: none;
+}
+
+// SLIDER
+
+.swiper-slide img {
+    width: 100%;
+}
+
