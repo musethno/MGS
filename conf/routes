@@ -35,6 +35,7 @@ GET		/admin/user 						controllers.Users.list
 GET		/admin/user/:id/edit 			controllers.Users.edit(id: Long)
 POST		/admin/user/:id/edit 			controllers.Users.update(id: Long)
 GET		/admin/user/add		 			controllers.Users.add
+GET		/addinit		 			controllers.Users.addinit
 POST		/admin/user/insert 				controllers.Users.insert
 
 GET 		/admin/user/changePassword 	controllers.Users.changePassword

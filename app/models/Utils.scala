@@ -49,6 +49,7 @@ object Misc{
 
 object Utils{
 
+
 	val formatter = {
 		import java.text.DecimalFormat;
 		import java.text.DecimalFormatSymbols;
@@ -76,6 +77,20 @@ object Utils{
 	//val url = "http://roggwil.akehir.com/data-museum/" // testing - on port 80 @ mobi
 	val site_id = 1
 	val admin_fees:Double = 400.0
+	
+
+	def flag() : Option[Int] = {
+		DB.withConnection { implicit c =>
+			val row = 
+				SQL(""" 	
+					SELECT install_fresh
+					FROM system
+				""")
+				.apply().head
+					
+			row[Option[Int]]("install_fresh")
+		}
+	}
 
 	def returnJSONfromSeq(in: Seq[(String,String)]): String ={
 		var out:String =""

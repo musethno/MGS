@@ -23,9 +23,17 @@ import play.libs.Json;
 object Application extends Controller with ChangeLanguage with Secured{
 
   
-  def index = Action{implicit request => Ok(views.html.public.home(
-		Exhibition.list(Some(0)).filter((a: Exhibition) => a.status_id)
-      ))
+  def index = Action{implicit request => 
+    var install_flag =  Utils.flag();
+    if(install_flag == Some(0)){
+      Ok(views.html.public.home(
+  		  Exhibition.list(Some(0)).filter((a: Exhibition) => a.status_id)
+        ))
+    }  
+    else{
+      Ok("error")
+    }
+      
   }
 
   def menu(id: Long) = Action{implicit request => 
