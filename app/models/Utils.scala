@@ -70,8 +70,8 @@ object Utils{
 	}
 
 	// constants
-	val path ="/var/data-museum/" // live server path...
-	val url = "data-museum/" // live server data file url
+	val path ="assets/data/" // live server path...
+	val url = "assets/data/" // live server data file url
 	//val path ="/var/www/html/data-museum/" //testing data url in apache public html
 	//val url = "http://192.168.1.77/data-museum/" // testing - on port 80 @ arx
 	//val url = "http://roggwil.akehir.com/data-museum/" // testing - on port 80 @ mobi
@@ -83,12 +83,12 @@ object Utils{
 		DB.withConnection { implicit c =>
 			val row = 
 				SQL(""" 	
-					SELECT install_fresh
+					SELECT install_flag
 					FROM system
 				""")
 				.apply().head
 					
-			row[Option[Int]]("install_fresh")
+			row[Option[Int]]("install_flag")
 		}
 	}
 

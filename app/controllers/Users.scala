@@ -22,9 +22,16 @@ object Users extends Controller with Secured{
 		Ok(views.html.admin.user.list(User.list))
 	}
 
-	 def addinit = Action { implicit request =>
-    Ok(views.html.admin.user.edit(myForm, 0))//
+	 def init = Action { implicit request =>
+		myForm.bindFromRequest.fold(
+			errors => BadRequest(views.html.admin.user.init(errors, 0)),
+			values => {
+				User.insertOrUpdate(values)				
+				Ok("Hello World")
+			}
+		)
   }
+	 
 	  
 	def add = IsAuthenticated{user => _ =>
 		Ok(views.html.admin.user.edit(myForm, 0))
@@ -41,6 +48,7 @@ object Users extends Controller with Secured{
 			}
 		)
 	}
+	
 
 	def edit(id: Long) = IsAuthenticated{user => _ =>
 		Ok(views.html.admin.user.edit(myForm.fill(User.edit(id)), id))

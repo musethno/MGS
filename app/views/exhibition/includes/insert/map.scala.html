@@ -1,0 +1,287 @@
+@(values: Exhibition)
+@import helper.twitterBootstrap._
+
+
+							
+    <link rel="stylesheet" href="/assets/css/leaflet.css" />
+    <link rel="stylesheet" href="/assets/js/leaflet/leaflet.draw/leaflet.draw.css" />
+    <link rel="stylesheet" href="/assets/js/bootstrap3-editable/css/bootstrap-editable.css" />
+    <link rel="stylesheet" href="/assets/js/bootstrap-wysihtml5/bootstrap-wysihtml5-0.0.2.css" />
+
+
+        <style type="text/css">
+        html, body, .container {
+        height: 100%;
+        width: 100%;
+        }
+        
+        #photo {
+       float: left;
+		width: 70%;
+        height: 30%;
+
+        }
+        
+        #annotation {
+        float: left;
+        height: 30%;
+        width: 30%;
+        }
+        
+        html, body {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        #textcontainer {
+        	bottom: 0px;
+        	width: 50%;
+        }
+        
+        #textcontainer p {
+       		font-family: sans-serif;
+        	color: white;
+        	font-size: 20px;
+        }        
+        
+        .annotation_single {
+        	display: none;
+        }
+    </style>
+			
+   <div id="photo"></div>		
+   <div id="annotation">
+
+   </div>
+    <script src="/assets/js/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+    <script src="/assets/js/bootstrap3-editable/js/inputs-ext/wysihtml5/wysihtml5.js"></script>
+    <script src="/assets/js/leaflet/leaflet.js"></script>
+    <script src="/assets/js/leaflet/leaflet.draw/leaflet.draw.js"></script>
+    <script src="/assets/js/leaflet/leaflet.draw/leaflet.draw-src.js"></script>
+	<script src="/admin/cat/@values.id.get/map/serve.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/assets/js/leaflet/L.TileLayer.Zoomify.js"></script>  
+    <script type="text/javascript" src="/assets/js/bootstrap-wysihtml5/bootstrap-wysihtml5-0.0.2.js"></script>  
+
+
+	
+	
+    <script type="text/javascript">
+
+
+    	 // Unique ID generator gratefully stolen from Jaspreet Chahal: 
+		 // http://jaspreetchahal.org/jquery-javascript-create-unique-id-for-an-element/
+
+	 var uniqID = {
+		  counter:0,
+		  get:function(prefix) {
+		      if(!prefix) {
+		          prefix = @values.id.get+'_';
+		      }
+		      var id =  prefix+""+uniqID.counter++;
+		      if(jQuery("#"+id).length == 0)
+		          return id;
+		      else
+		          return uniqID.get()	
+	   }
+	};
+    
+    var map = L.map('photo').setView([37.8, -96], 4);
+
+    L.tileLayer.zoomify('/assets/data/maps/layer/', { 
+        width: 51472, 
+        height: 25449,
+        tolerance: 0.8,
+        attribution: ''
+    }).addTo(map);
+	var drawnItems = new L.FeatureGroup();
+	map.addLayer(drawnItems);
+
+	var drawControl = new L.Control.Draw({
+		draw: {
+			position: 'topleft',
+			polygon: {
+				allowIntersection: false,
+				drawError: {
+					color: '#b00b00',
+					timeout: 1000
+				},
+				shapeOptions: {
+					color: '#bada55'
+				},
+				showArea: true
+			},
+			polyline: {
+				metric: false
+			},
+			circle: {
+				shapeOptions: {
+					color: '#662d91'
+				}
+			}
+		},
+		edit: {
+			featureGroup: drawnItems
+		}
+	});
+
+	map.addControl(drawControl);
+	
+	function onEachFeature(feature, layer) {
+
+		drawnItems.addLayer(layer)
+		shape_id = feature.pk
+		var shape = layer.toGeoJSON();
+		annotation = feature.value
+	    layer._path.id = 'path_'+shape_id;
+		layer._path.note_id = 'annotation_'+shape_id;
+
+        $("#annotation").append('<div class="annotation_single" id="'+layer._path.note_id+'"><a href="#" id="'+shape_id+'" data-url="/admin/cat/@values.id.get/map" data-pk="'+shape_id+'" data-type="textarea" data-placement="right" data-title="annotation">'+annotation+'</a></div>');
+		$.fn.editable.defaults.mode = 'inline';
+ 			 	$('#'+shape_id).editable({
+ 					ajaxOptions: {
+ 						contentType: 'application/json'
+ 						, dataType: 'json'
+ 						},
+ 					params: function(params) {
+ 						shape.value = params.value
+ 						$.extend( true, params, shape );
+
+ 						return JSON.stringify(params); 
+ 					}
+		});
+		$("#"+layer._path.id).click(function(){
+			$(".selected").removeClass("selected").addClass("notselected");
+			$("#"+layer._path.note_id).addClass("selected").removeClass("notselected");
+			$(".notselected").hide();				
+			$(".selected").fadeIn();
+
+		}); 
+
+  							
+	}
+
+
+	L.geoJson(shapeCollection, {
+    	onEachFeature: onEachFeature
+	}).addTo(map);
+	
+	map.on('draw:created', function (e) {
+		var type = e.layerType,
+			layer = e.layer;
+
+		if (type === 'marker') {
+			layer.bindPopup('A popup!');
+		}
+
+		drawnItems.addLayer(layer);
+		
+	});
+
+	map.on('draw:created', function (e) {
+
+
+		  var type = e.layerType;
+		  var layer = e.layer;
+		  var shape = layer.toGeoJSON();
+		  var shape_id = uniqID.get();
+		  shape['pk'] = layer._path.id;
+		  var shape_for_db = JSON.stringify(shape);
+		  layer._path.id = 'path_'+shape_id;
+		  layer._path.note_id = 'annotation_'+shape_id;
+	
+			$.ajax({
+				type: 'POST',
+				url: "/admin/cat/"+@values.id.get+"/map",
+				data: shape_for_db,
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+                success: function (result) {
+
+        $("#annotation").append('<div class="annotation_single selected" id="'+layer._path.note_id+'"><a href="#" id="'+shape_id+'" data-url="/admin/cat/@values.id.get/map" data-pk="'+shape_id+'" data-type="textarea" data-placement="right" data-title="annotation">Hier klicken und Text eingeben...</a></div>');
+		$.fn.editable.defaults.mode = 'inline';
+ 			 	$('#'+shape_id).editable({
+ 					ajaxOptions: {
+ 						contentType: 'application/json'
+ 						, dataType: 'json'
+ 						},
+ 					params: function(params) {
+ 						shape.value = params.value
+ 						$.extend( true, params, shape );
+
+ 						return JSON.stringify(params); 
+ 					}
+		});
+					$(".selected").fadeIn();
+		$("#"+layer._path.id).click(function(){
+			$(".selected").removeClass("selected").addClass("notselected");
+			$("#"+layer._path.note_id).addClass("selected").removeClass("notselected");
+			$(".notselected").hide();				
+			$(".selected").fadeIn();
+
+		}); 
+
+
+				},
+				error: function(error) {
+					alert("No Ajax response, Error:" + JSON.stringify(error));
+				}
+			});
+			
+		});
+		
+
+	map.on('draw:edited', function (e) {
+
+	    var layers = e.layers;
+	    layers.eachLayer(function (layer) {
+		var shape = layer.toGeoJSON();
+	    shape_id = layer._path.id
+		annotation = shape.value
+		shape_for_db = JSON.stringify(shape);
+			$.ajax({
+				type: 'POST',
+				url: "/admin/cat/"+@values.id.get+"/map",
+				data: shape_for_db,
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+                success: function (result) {
+					console.log("done");
+				},
+				error: function(error) {
+					alert("No Ajax response, Error:" + JSON.stringify(error));
+				}
+			});
+	    });
+	});
+
+	map.on('draw:deleted', function (e) {
+	    var layers = e.layers;
+	    layers.eachLayer(function (layer) {
+		var shape = layer.toGeoJSON();
+	    shape_id = shape.pk
+		annotation = shape.value
+		shape_for_db = JSON.stringify(shape);
+			$.ajax({
+				type: 'POST',
+				url: "/admin/cat/"+@values.id.get+"/map/delete",
+				data: shape_id,
+				contentType: "text/plain; charset=utf-8",
+				dataType: "text",
+                success: function (result) {
+					console.log("done");
+				},
+				error: function(error) {
+					alert("No Ajax response, Error:" + JSON.stringify(error));
+				}
+			});
+	    });
+	});
+	        
+    </script>
+</div>
+<div id="textcontainer">
+</div>
+							
+							
+							
+							

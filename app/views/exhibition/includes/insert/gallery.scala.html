@@ -1,0 +1,113 @@
+@(id: Long, parent_id: Long, values: Exhibition)
+<div class="row">
+	<div class="col-md-12">
+	<h2>@Messages("file")</h2>
+
+		<div id="file-uploader">
+
+		    <noscript>
+		        <p>Please enable JavaScript to use file uploader.</p>
+		        <!-- or put a simple form for upload here -->
+		    </noscript>
+			
+			<script src="@routes.Assets.at("js/fileuploader.js")"></script>
+			<script>
+				function createUploader(){
+					var uploader = new qq.FileUploader({
+						element: document.getElementById('file-uploader'),
+						action: '/admin/@values.id.get/upload',
+						debug: true,
+						text: {
+							uploadButton: '<div><i class="icon-upload icon-white"></i> Test me now and upload a file</div>'
+						},
+						template: '<div class="qq-uploader span12">' +
+							'<pre class="qq-upload-drop-area span12"><span>Drag file here</span></pre>' +
+							'<div class="qq-upload-button btn btn-primary" style="width: auto;">@Messages("upload_file")</div>' +
+							'<span class="qq-drop-processing"><span>{dropProcessingText}</span><span class="qq-drop-processing-spinner"></span></span>' +
+							'<ul class="qq-upload-list" style="margin-top: 10px; text-align: center;"></ul>' +
+							'</div>',
+					});
+				}
+
+				// in your app create uploader as soon as the DOM is ready
+				// don't wait for the window to load
+				window.onload = createUploader;
+			</script>
+
+		</div>
+		
+
+	</div>
+</div>
+
+<!--- Insert single gallery slide -->
+
+<div class="row">
+		<div class="col-md-12">
+
+				<div class="actions col-md-offset-3 col-md-9">
+			<form method="post" class="form-horizontal" role="form" action="@routes.Galleries.insert(id, parent_id)">
+					<input type="submit" class="btn btn-primary" value="@Messages("add")">
+				</div>
+			</form>
+		</div>
+	</div>
+<!-- end insert gallery slide -->
+		
+
+<div class="row">
+	
+	<div class="col-md-12">
+	<h2>@Messages("preview")</h2>
+		
+
+	
+
+	@defining(Exhibition.Gallery.list(values.id.get)){exh=>
+		@exh.map{pic =>
+<div class="row" style="outline: 1px dotted black">
+	
+				<div class="col-md-2">
+				<a href="@pic.filename"  class="thumbnail"><img src="/data-museum/@(pic.filename)" id="@pic.id" alt="@pic.id" /></a>
+										<p>
+						@if(pic.position>1){
+							<a class ="btn btn-primary" href="@routes.Galleries.move(pic.id.get, id, parent_id, true)"><span class="glyphicon glyphicon-arrow-up"></span></a>}
+						@if(pic.position< exh.size){
+							<a class ="btn btn-primary" href="@routes.Galleries.move(pic.id.get, id, parent_id, false)">
+								<span class="glyphicon glyphicon-arrow-down"></span>
+							</a>
+						}
+						<a class ="btn btn-danger" href="@routes.Exhibitions.deleteGallery(pic.id.get, values.id.get, parent_id)">@Messages("delete")</a>
+						</p>
+										
+					</div>
+					<div class="col-md-10">			    					
+					<div class="caption">
+
+
+<!--							<span class="caption2"><span class="caption3">@pic.caption.getOrElse("")</span></span>
+-->							<span class="captionEdit">
+								
+								<form id="editCaption" action="@routes.Galleries.update(pic.id.get)" method="post">
+								<textarea style="width: 100%" rows="25" name="caption">@pic.caption.getOrElse("")</textarea>
+								<input type="submit" class="btn btn-primary" value="@Messages("gallery.send")">
+								</form>
+							</span>
+
+						<p>
+							
+						</p>
+
+
+					</div>
+					</div>
+
+			
+</div>
+		}
+	}
+			
+
+
+	</div>
+</div>

@@ -1,5 +1,7 @@
 package models
 
+
+
 import play.api.db._
 import play.api.Play.current
 
@@ -11,26 +13,30 @@ import anorm.SqlParser._
 import java.util.Date
 import play.Logger
 
-/*
-case class Gallerys(
-	id: Pk[Long]
-	, default: Boolean
-	, position: Long
-	, cat_id: Long
-	, caption: Option[String]
-	, filename: String
-)
-*/
 
 case class Gallerys(
-        id: Pk[Long]
-        , filename: Option[String]
-        , default: Boolean
-        , position: Long
-        , cat_id: Long
-        , caption: Option[String]
+  id: Pk[Long]
+  , filename: Option[String]
+  , default: Boolean
+  , position: Long
+  , cat_id: Long
+  , caption: Option[String]
 )
 
+case class Map(
+  id: Pk[Long]
+  , annotation: Option[String]
+  , shape: String
+  , shape_id: String
+)
+
+case class mapAnnotation(
+   annotation: String
+)
+
+case class mapShapes(
+   shape: String
+)
 
 case class Tours(
 	id: Pk[Long]
@@ -84,12 +90,11 @@ object Exhibition{
 	val types:Seq[(Option[Long], String, Option[String])] = 
 	Seq(
 		  (None, "menu", None)
-		, (None, "tour", None)
 		, (Some(1),"text", Some("list-alt"))
 		, (Some(3), "images", Some("picture"))
 		, (Some(4),"audio", Some("volume-up"))
 		, (Some(5),"video", Some("film"))
-		, (Some(6),"html", Some("list-alt"))
+		, (Some(6),"map", None)
 	)
 
 	val typesSelect:Seq[(String, String)] = types.map(a => ({if(a._1.isDefined){a._1.get.toString}else{""}} ->a._2))
@@ -707,6 +712,124 @@ object Exhibition{
 	}
 
 
+	object Maps{
+
+
+		val table = "maps"
+
+		def insert(id: Long, shape_id: String, shape: String){
+
+		      val query = "INSERT INTO museum.maps SET arborescence_id="+id+", shape_id='"+shape_id+"', shape='"+shape+"', date_added=NOW();";
+
+		    
+
+  		// insert/update entry
+  		DB.withConnection{implicit c =>
+  			SQL(query).executeUpdate
+		  } 
+		
+	}
+		
+		def update(id: Long, shape_id: String, shape: String){
+  
+  	  // prepare query
+  		val query = "UPDATE museum.maps SET shape='"+shape+"' WHERE shape_id='"+shape_id+"'";
+  		
+  		// insert/update entry
+  		DB.withConnection{implicit c =>
+  			SQL(query).executeUpdate
+		  } 
+		
+	}
+	
+		def annotate(shape_id: String, annotation: String){
+  		   
+  	  // prepare query
+  
+  		val query = "UPDATE museum.maps SET annotation='"+annotation+"' WHERE shape_id='"+shape_id+"'";
+  		
+  		// insert/update entry
+  		DB.withConnection{implicit c =>
+  			SQL(query).executeUpdate
+  		} 
+	}
+		
+		def delete(shape_id: String){
+  	  // prepare query
+  		val query = "DELETE FROM museum.maps WHERE shape_id='"+shape_id+"'";
+  		// insert/update entry
+  		DB.withConnection{implicit c =>
+  			SQL(query).executeUpdate
+  		} 
+	}
+
+		def serve(id: Long) = {
+  	  // prepare query
+  		val query = "SELECT * FROM "+table+" WHERE arborescence_id='"+id+"'";
+  		// Select items
+  		DB.withConnection{implicit c =>
+  			SQL(query)
+  				.on('id -> id)
+  				.as(parseShapes *)
+  		}
+		
+	}
+		
+		def serveSingle(id: Long, shape_id: String) = {
+  	  // prepare query
+  		val query = "SELECT shape FROM "+table+" WHERE shape_id='"+shape_id+"'";
+  		// Select items
+  		DB.withConnection{implicit c =>
+  			SQL(query)
+  				.on('id -> id)
+  				.as(parseShapes *)
+  		}
+		
+	}
+		
+/*		def list(id: Long):List[Tours] = {
+			DB.withConnection{implicit c =>
+				SQL("SELECT * FROM "+table+" WHERE id={id} ORDER BY position ASC")
+				.on('id -> id)
+				.as(parser *)
+			}
+		
+
+		def detail(id: Long):Tours = {
+			DB.withConnection{implicit c =>
+				SQL("SELECT * FROM "+table+" WHERE id={id}")
+				.on('id -> id)
+				.as(parser single)
+			}
+		}
+*/
+		val parseShapes = {
+			get[String]("shape") map {
+				case shape=> 
+				shape
+			}
+		}
+		
+			val parseAnnotation = {
+			get[String]("annotation") map {
+				case annotation=> 
+				annotation
+			}
+		}
+		
+		val parser = {
+			get[Pk[Long]]("arborescence_id")~
+			get[Option[String]]("annotation")~
+			get[String]("shape")~
+			get[String]("shape_id") map {
+				case id~annotation~shape~shape_id=> 
+				Map(id, annotation, shape, shape_id)
+			}
+		}
+
+
+	}
+
 
 
 
@@ -758,7 +881,6 @@ object Exhibition{
 		}
 		
 		def insertFileName(id: Long, filename: Option[String]){
-			print(filename)
 			DB.withConnection{implicit c=>
 				SQL("UPDATE "+table+" SET filename={filename} WHERE id={id}")
 				.on('id -> id, 'filename -> filename)
@@ -850,29 +972,6 @@ object Exhibition{
                         }
                 }
 
-
-/*
-                val parser = {
-                        get[Pk[Long]]("id")~
-                        get[Long]("position")~
-                        get[Long]("cat_id")~
-                        get[Option[String]]("caption") map {
-                                case id~position~cat_id~caption =>
-                                Gallerys(id, Utils.url+table+"."+id+".jpg", false, position, cat_id, caption)
-                        }
-                }
-
-
-		val parser = {
-			get[Pk[Long]]("id")~
-			get[Long]("position")~
-			get[Long]("cat_id")~
-			get[Option[String]]("caption") map {
-				case id~position~cat_id~caption => 
-				Gallerys(id, Utils.url+table+"."+id+".jpg", false, position, cat_id, caption)
-			}
-		}
-*/
 
 		def update(id: Long, data: Gallery_e){
 

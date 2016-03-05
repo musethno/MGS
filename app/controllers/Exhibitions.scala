@@ -14,12 +14,18 @@ import anorm._
 import play.api.db._
 import play.api.Play.current
 
+import play.mvc.BodyParser;
+
 import play.api.libs.json.Json
 import play.api.libs.json.JsValue
+import play.api.libs.json.JsObject
 
+import com.fasterxml.jackson.databind.JsonNode;
+import play.mvc.BodyParser;
 
 //import securesocial.core.{Identity, Authorization}
 import play.Logger
+
 
 object Exhibitions extends Controller with Secured{
 	
@@ -334,29 +340,6 @@ object Exhibitions extends Controller with Secured{
 	}
 
 
-
-/*
-	
-	def upload(id: Long) = Action(parse.temporaryFile) {implicit request =>
-		val file_id = Exhibition.Gallery.insert(id)
-		val ext:String =".jpg"
-
-		import java.io.File
-		val resultString = try {
-			
-			val filename:String = Exhibition.Gallery.table+"."+file_id.get+ext
-			val file = new File(Utils.path+filename)
-		  	request.body.moveTo(file, true)
-			Exhibition.Gallery.insertFileName(file_id.get, filename)
-
-			"file has been uploaded"
-		} catch {
-			case e: Exception => "an error has occurred while uploading the file"
-		}
-
-		Ok("{success: true}")
-	}
-*/
 	
         def upload(id: Long) = Action(parse.temporaryFile) {implicit request =>
                 val file_id = Exhibition.Gallery.insert(id)
@@ -391,9 +374,108 @@ object Exhibitions extends Controller with Secured{
   		)
 	}
 
-
 }
 
+object Maps extends Controller with Secured {
+  
+ 
+  /* MAPS */
+  
+
+	
+def updateMap(id: Long) = Action { request =>
+  request.body.asJson.map { json =>
+     val shape_id = (json \ "pk").toString().replace("\"", "");
+      val shape = json.toString
+      val test = Exhibition.Maps.serveSingle(id, shape_id);
+      if(test.isEmpty){
+         Exhibition.Maps.insert(id, shape_id, shape)
+      } else {
+         Exhibition.Maps.update(id, shape_id, shape)
+      }
+      
+      
+      Ok(json)
+  }.getOrElse {
+    BadRequest("Expecting Json data")
+  }
+}
+
+def deleteShape(id: Long) = Action { request =>
+  val body: AnyContent = request.body
+  val textBody: Option[String] = body.asText 
+  
+  // Expecting text body
+  textBody.map { text =>
+      Exhibition.Maps.delete(text)
+    Ok("Got: " + text)
+  }.getOrElse {
+    BadRequest("Expecting text/plain request body")  
+  }
+  
+}
+
+
+
+  
+  
+
+def annotateMap(id: Long) = Action { request =>
+  request.body.asJson.map { json =>
+      val shape_id = (json \ "pk").toString().replace("\"", "");
+      val annotation = (json \ "value").toString
+      
+//      var feature  = Json.toJson(Exhibition.Maps.serveSingle(id, shape_id))   
+//      val t: JsObject = feature.as[JsObject] ++ Json.obj("annotation" -> annotation)
+//      val shape=t.toString
+//      Exhibition.Maps.update(id, shape_id, shape)
+     
+      Exhibition.Maps.annotate(shape_id, annotation)
+      Ok(json)
+  }.getOrElse {
+    BadRequest("Expecting Json data")
+  }
+}
+/*
+def serveMaps(id: Long) = Action { request =>
+  request.body.asJson.map { json =>
+      Exhibition.Maps.serve(id)
+      Ok(json)
+  }.getOrElse {
+    BadRequest("Expecting Json data")
+  }
+}
+*/
+
+
+  def serveMaps(id: Long) = Action{implicit request => 
+  import play.api.libs.json.Json
+  
+
+    var p = Exhibition.Maps.serve(id)  
+    var shapes = ""
+    for (feature <- p) shapes=shapes+feature.toString+", "
+      
+    var str = "var shapeCollection = {\"type\": \"FeatureCollection\", \"features\": ["+shapes+"]};"
+
+    
+    Ok(str)
+  }
+
+
+  def serveAnnotation(id: Long, shape_id: String) = Action{implicit request => 
+  import play.api.libs.json.Json
+ 
+    var feature  = Exhibition.Maps.serveSingle(id, shape_id).toString
+    //var p = Exhibition.Maps.serveSingle(id, shape_id).toString
+
+    
+    Ok(feature)
+  }
+
+
+
+}
 
 object Galleries extends Controller with Secured{
         def move(id: Long, sid: Long, parent_id: Long, upOrDown: Boolean) = IsAuthenticated{user => _ =>
@@ -444,52 +526,3 @@ object Galleries extends Controller with Secured{
 }
 
 
-/*
-object Galleries extends Controller with Secured{
-	def move(id: Long, sid: Long, parent_id: Long, upOrDown: Boolean) = IsAuthenticated{user => _ =>
-		Exhibition.Gallery.move(id,sid, upOrDown)
-		Redirect(routes.Exhibitions.editSub(sid, parent_id))
-	}
-
-	def insert(id: Long, parent_id: Long) = IsAuthenticated{user => _ =>
-		Exhibition.Gallery.insert(id)
-
-				Redirect(routes.Exhibitions.editSub(id, parent_id))
-				.flashing(
-    				"success" -> "cat.edited.successfully"
-  				)
-	}
-
-	
-	def update(id: Long) = IsAuthenticated{user => implicit request =>
-		import play.api.libs.json.Json
-
-		myForm.bindFromRequest.fold(
-			errors 	=> {
-				val r = 
-				Json.stringify(Json.obj(
-					"status" -> "error"
-				))
-				Ok(r)
-			},
-			data		=> {
-				Exhibition.Gallery.update(id, data)
-				val r = 
-				Json.stringify(Json.obj(
-					"status" -> "ok",
-					"caption" -> data.caption
-				))
-				Ok(r)
-			}
-		)
-	}
-
-
-	val myForm = Form(
-		mapping(
-			"caption" -> optional(text)
-		)	
-		(Gallery_e.apply)(Gallery_e.unapply)
-	)
-}
-*/

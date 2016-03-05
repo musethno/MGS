@@ -1,0 +1,261 @@
+@(values: Exhibition, formatter: java.text.DecimalFormat)
+<!-- TODO: Integrate in stylesheet file -->
+			    <style>
+
+    html, body {
+        position: relative;
+        height: 100%;
+    }
+	
+
+    body {
+        background: #000;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  
+        color:#000;
+        margin: 0;
+        padding: 0;
+    }
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+	
+
+
+    .gallery-top .swiper-slide {
+		
+        background-size: 100%;
+        background-position: center;
+    }
+	
+	.gallery-thumb. swiper-slide {
+        background-size: cover;
+        background-position: center;
+    }
+	
+    .gallery-top {
+        height: 30%;
+        width: 100%;
+    }
+    .gallery-thumbs {
+        height: 20%;
+        box-sizing: border-box;
+        padding: 10px 0;
+    }
+    .gallery-thumbs .swiper-slide {
+        width: 25%;
+        height: 100%;
+        opacity: 0.4;
+    }
+    .gallery-thumbs .swiper-slide-active {
+        opacity: 1;
+			    -webkit-transition-duration: 1s; /* Safari */
+    transition-duration: 1s;
+    }
+    
+    </style>
+    
+				<div class="row" style="height: 100%">
+					<div class="col-md-12 col-xs-12-p cms-element" style="height: 100%">
+						<div class="col-md-12 col-xs-12-p media-main"  style="height: 100%">
+							<div class="gallery-container" style="height: 100%">
+								<div class="swiper-container gallery-top" style="height: 80%">
+									<div class="swiper-wrapper">
+										<!--  TODO: Inline styles to stylesheet file -->
+										<div class="swiper-slide" style="height: 100%; font-size: 6vw; margin-top: 0; text-align: center; top: 80px; width: 100%;">
+											@if(values.number.isDefined){
+												@formatter.format(values.number.get)
+												} 
+											@if(values.name_en.isDefined){
+												<div class="en">
+													@values.name_en
+												</div>
+												}
+												<div class="de">
+													@values.name
+												</div>
+										</div>
+									@defining(Exhibition.Gallery.list(values.id.get)) { gallery=>
+									@for(i <- 0 to gallery.size-1){
+										@if(i%2==0){	
+											<!-- begin row -->
+										}	
+										@if(gallery(i).id.isDefined){
+										<!--  TODO: Inline styles to stylesheet file -->
+											<div class="gallery_caption swiper-slide" style="margin-top: 22px; width: 100px; text-align: center;">
+										@if(gallery(i).filename.isDefined){
+											@Html(gallery(i).caption.getOrElse(""))
+											</div>
+											<div class="gallery_caption swiper-slide" style="margin-top: 22px; width: 100px; text-align: center;">
+												<div> 
+													<img src="../@gallery(i).filename" id="@gallery(i).id" alt="@Html(gallery(i).caption.getOrElse(""))" title="@Html(gallery(i).caption.getOrElse(""))" />
+												</div>
+										}else{
+											@Html(gallery(i).caption.getOrElse(""))
+										}
+							
+							
+						
+							<!--@Html(gallery(i).caption.getOrElse(""))-->
+						</div>
+						}
+							
+<!--						@if(gallery(i).caption.isDefined){
+						<div class="swiper-slide">
+						<div style="max-height: 57%; width: 91%;">
+							@if(gallery(i).filename.isDefined){	
+								<div class="row" style="text-align: center; width: 100%; margin-bottom: 21px; margin-left: 0; margin-right: 0;" >
+									<img src="/data-museum/@gallery(i).filename" id="@gallery(i).id" alt="@Html(gallery(i).caption.getOrElse(""))" title="@Html(gallery(i).caption.getOrElse(""))" />
+								</div>
+							}
+						<div style="text-align: center">
+							@Html(gallery(i).caption.getOrElse(""))
+						</div>
+						</div>
+						</div>
+						
+						}-->
+
+				
+
+							@if((i+1)%2==0 || i==gallery.size-1){
+				
+							}
+							
+						  
+						}}
+						    <!-- If we need pagination -->
+
+
+						   </div></div>
+					
+										<div class="swiper-container gallery-thumbs">
+					
+					       <div class="swiper-wrapper">
+							
+																	<div class="swiper-slide" style="
+  height: 100%;
+
+    margin-top: 0;
+    text-align: center;
+    top: 80px;
+    width: 100%;">
+								
+							</div>
+
+
+
+					
+					
+					
+				
+						@defining(Exhibition.Gallery.list(values.id.get)) { gallery=>
+						@for(i <- 0 to gallery.size-1){
+
+							@if(i%2==0){
+							
+						<!-- begin row -->
+							}
+
+						
+<!--						<div class="swiper-slide">
+							<a class="thumbnail" href="#" title="@gallery(i).caption.getOrElse("&nbsp;")">
+								<img   src="/data-museum/@gallery(i).filename" id="@gallery(i).id" alt="@Html(gallery(i).caption.getOrElse(""))" title="@Html(gallery(i).caption.getOrElse(""))" />
+							</a></div>
+						
+						@if(gallery(i).caption.isDefined){
+						<div class="gallery_caption swiper-slide" style="   width: 200px;">				
+							@Html(gallery(i).caption.getOrElse(""))
+						</div>}-->
+
+						@if(gallery(i).id.isDefined){
+						@if(gallery(i).filename.isDefined){
+						<div class="swiper-slide" style="margin-top: 22px; width: 35px; text-align: center;">
+							<span style=" font-size: 42px; height: 50px; padding-top: 0px; top: 0; width: 50px;">&bull;</span>
+						</div> <div class="swiper-slide" style="margin: 0 auto; margin-top: 22px; width: 75px; text-align: center;">
+
+
+								<div class="thumbnail-circle" style="text-align: center;
+								
+							width: 75px;
+							height: 75px;
+							border-radius: 50%;
+							background-repeat: no-repeat; 
+							background-position: center center; 
+							background-size: cover;
+							background-image: url('/data-museum/@gallery(i).filename');
+								-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+
+	">
+									
+									
+<!--									<img src="/data-museum/@gallery(i).filename" id="@gallery(i).id" alt="@Html(gallery(i).caption.getOrElse(""))" title="@Html(gallery(i).caption.getOrElse(""))" />
+-->								</div>
+							}else{
+								<span style=" font-size: 42px; height: 50px; padding-top: 0px; top: 0; width: 50px;">&bull;</span>
+							}
+							
+							
+						
+							<!--@Html(gallery(i).caption.getOrElse(""))-->
+						</div>
+						}
+						
+		
+						
+								
+
+							@if((i+1)%2==0 || i==gallery.size-1){
+				
+							}
+							
+						  
+						}}
+						    <!-- If we need pagination -->
+
+
+						   </div></div>
+										</div>
+
+    <div class="swiper-pagination"></div>
+    
+    <!-- If we need navigation buttons -->
+    <div class="swiper-button-prev" ></div>
+    <div class="swiper-button-next" ></div>
+    
+    <!-- If we need scrollbar -->
+    <div class="swiper-scrollbar"></div>
+						</div>
+						 </div>
+
+
+
+
+	<script>	
+		var galleryTop = new Swiper('.audio-slides', {
+		nextButton: '.swiper-button-next',
+		prevButton: '.swiper-button-prev',
+		spaceBetween: 10,
+		});
+			
+		var galleryTop = new Swiper('.gallery-top', {
+		nextButton: '.swiper-button-next',
+		prevButton: '.swiper-button-prev',
+		spaceBetween: 10,
+		});
+		
+		var galleryThumbs = new Swiper('.gallery-thumbs', {
+		spaceBetween: 10,
+		centeredSlides: true,
+		slidesPerView: 'auto',
+		touchRatio: 0.2,
+		slideToClickedSlide: true
+		});
+		galleryTop.params.control = galleryThumbs;
+		galleryThumbs.params.control = galleryTop;
+	</script>
+									

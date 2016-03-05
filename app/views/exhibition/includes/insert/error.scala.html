@@ -1,0 +1,14 @@
+@(myForm: Form[Exhibition])  
+        <div class="alert alert-danger">
+            <p>@Messages("form.fixErrors")</p>
+
+            @if(myForm.errors.size > 0) {
+	            <ul>
+	            @for((a) <- myForm.errors) {
+	            <li>@Messages(a.message)</li>
+	            }
+	         	</ul>
+         	}
+        
+            
+        </div>

@@ -1,0 +1,5 @@
+@(values: Exhibition)
+<video  controls @if(values.file2.isDefined){poster="@values.file2.get"}>
+	<source src="@values.file.get" type="video/mp4">
+	Your browser does not support the video tag.
+</video>
