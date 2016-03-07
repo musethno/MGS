@@ -1,6 +1,7 @@
 package controllers
 
 import play.api._
+
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
@@ -25,6 +26,9 @@ import play.mvc.BodyParser;
 
 //import securesocial.core.{Identity, Authorization}
 import play.Logger
+import java.io.File
+import java.util.zip.{ZipEntry, ZipFile}
+import scala.collection.JavaConversions._
 
 
 object Exhibitions extends Controller with Secured{
@@ -342,6 +346,8 @@ object Exhibitions extends Controller with Secured{
 
 	
         def upload(id: Long) = Action(parse.temporaryFile) {implicit request =>
+           // request.body.moveTo(new File(Play.application.path+"/public/data/picturetest"))
+            Ok("File uploaded")
                 val file_id = Exhibition.Gallery.insert(id)
                 //val mess = Utils.File.upload(request, file_id.get, "gallery")
 
@@ -351,7 +357,7 @@ object Exhibitions extends Controller with Secured{
                 import java.io.File
                 val resultString = try {
 						val filename:Option[String] = Option[String](Exhibition.Gallery.table+"."+file_id.get+ext)
-                        val file = new File(Utils.path+Exhibition.Gallery.table+"."+file_id.get+ext)
+                        val file = new File(Play.application.path+"/public/data/"+file_id.get+ext)
                         request.body.moveTo(file, true)
 			Exhibition.Gallery.insertFileName(file_id.get, filename)
 
@@ -380,7 +386,25 @@ object Maps extends Controller with Secured {
   
  
   /* MAPS */
-  
+  def upload(id: Long) = Action(parse.temporaryFile) {implicit request =>
+      val file_id = id
+      val ext:String =".zip"
+      val fileName: String = id.toString
+      val filePath: String = Play.application.path+"/public/data/maps/"+fileName+"/"
+      Logger.info(fileName)
+      val resultString = try {
+			//val filename:Option[String] = Option[String](Exhibition.Gallery.table+"."+file_id.get+ext)
+      val file = new File(filePath+fileName+ext)
+      request.body.moveTo(file, true)
+    		//Exhibition.Gallery.insertFileName(file_id, filename)
+      
+      Utils.File.unZip(filePath+fileName+ext, filePath)
+
+      } catch {
+      case e: Exception => "an error has occurred while upload-ing the file"
+      }
+     Ok("{success: true}")
+  }
 
 	
 def updateMap(id: Long) = Action { request =>

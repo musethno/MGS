@@ -68,7 +68,7 @@
 <div class="row" style="outline: 1px dotted black">
 	
 				<div class="col-md-2">
-				<a href="@pic.filename"  class="thumbnail"><img src="/data-museum/@(pic.filename)" id="@pic.id" alt="@pic.id" /></a>
+				<a href="@pic.filename"  class="thumbnail"><img src="/assets/data/@(pic.filename)" id="@pic.id" alt="@pic.id" /></a>
 										<p>
 						@if(pic.position>1){
 							<a class ="btn btn-primary" href="@routes.Galleries.move(pic.id.get, id, parent_id, true)"><span class="glyphicon glyphicon-arrow-up"></span></a>}

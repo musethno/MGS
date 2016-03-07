@@ -73,9 +73,10 @@ GET 	/admin/exhibition/move/:id/:direction	controllers.Exhibitions.move(id: Long
 GET 	/admin/cat/move/:id/:direction/:parent	controllers.Exhibitions.moveC(parent: Long, id: Long, direction: Boolean)
 
 ## maps
-POST 	/admin/cat/:id/map					controllers.Maps.updateMap(id: Long)
+POST 	/admin/cat/:id/map/upload 				controllers.Maps.upload(id: Long)
+POST 	/admin/cat/:id/map						controllers.Maps.updateMap(id: Long)
 POST 	/admin/cat/:id/map/annotate				controllers.Maps.annotateMap(id: Long)
-POST 	/admin/cat/:id/map/delete					controllers.Maps.deleteShape(id: Long)
+POST 	/admin/cat/:id/map/delete				controllers.Maps.deleteShape(id: Long)
 GET 	/admin/cat/:id/map/serve.js				controllers.Maps.serveMaps(id: Long)
 GET 	/admin/cat/:id/:shape_id/map/serveAnnotation			controllers.Maps.serveAnnotation(id: Long, shape_id: String)
 

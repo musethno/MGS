@@ -48,10 +48,41 @@
         	display: none;
         }
     </style>
+
+		<div id="file-uploader">
+
+		    <noscript>
+		        <p>Please enable JavaScript to use file uploader.</p>
+		        <!-- or put a simple form for upload here -->
+		    </noscript>
 			
+			<script src="@routes.Assets.at("js/fileuploader.js")"></script>
+			<script>
+				function createUploader(){
+					var uploader = new qq.FileUploader({
+						element: document.getElementById('file-uploader'),
+						action: '/admin/cat/@values.id.get/map/upload',
+						debug: true,
+						text: {
+							uploadButton: '<div><i class="icon-upload icon-white"></i> Test me now and upload a file</div>'
+						},
+						template: '<div class="qq-uploader span12">' +
+							'<pre class="qq-upload-drop-area span12"><span>Drag file here</span></pre>' +
+							'<div class="qq-upload-button btn btn-primary" style="width: auto;">@Messages("upload_file")</div>' +
+							'<span class="qq-drop-processing"><span>{dropProcessingText}</span><span class="qq-drop-processing-spinner"></span></span>' +
+							'<ul class="qq-upload-list" style="margin-top: 10px; text-align: center;"></ul>' +
+							'</div>',
+					});
+				}
+
+				// in your app create uploader as soon as the DOM is ready
+				// don't wait for the window to load
+				window.onload = createUploader;
+			</script>
+
+		</div>
    <div id="photo"></div>		
    <div id="annotation">
-
    </div>
     <script src="/assets/js/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
     <script src="/assets/js/bootstrap3-editable/js/inputs-ext/wysihtml5/wysihtml5.js"></script>
@@ -61,15 +92,10 @@
 	<script src="/admin/cat/@values.id.get/map/serve.js" type="text/javascript"></script>
     <script type="text/javascript" src="/assets/js/leaflet/L.TileLayer.Zoomify.js"></script>  
     <script type="text/javascript" src="/assets/js/bootstrap-wysihtml5/bootstrap-wysihtml5-0.0.2.js"></script>  
-
-
+	<script src="@routes.Assets.at("js/fileuploader.js")"></script>
 	
 	
     <script type="text/javascript">
-
-
-    	 // Unique ID generator gratefully stolen from Jaspreet Chahal: 
-		 // http://jaspreetchahal.org/jquery-javascript-create-unique-id-for-an-element/
 
 	 var uniqID = {
 		  counter:0,

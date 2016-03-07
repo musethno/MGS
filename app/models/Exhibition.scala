@@ -717,6 +717,17 @@ object Exhibition{
 
 		val table = "maps"
 
+				def upload(id: Long, shape_id: String, shape: String){
+
+		      val query = "INSERT INTO museum.maps SET arborescence_id="+id+", shape_id='"+shape_id+"', shape='"+shape+"', date_added=NOW();";
+
+  		// insert/update entry
+  		DB.withConnection{implicit c =>
+  			SQL(query).executeUpdate
+		  } 
+		
+	}
+		
 		def insert(id: Long, shape_id: String, shape: String){
 
 		      val query = "INSERT INTO museum.maps SET arborescence_id="+id+", shape_id='"+shape_id+"', shape='"+shape+"', date_added=NOW();";
