@@ -28,8 +28,6 @@ case class Map(
   , annotation: Option[String]
   , shape: String
   , shape_id: String
-  , width: String
-  , height: String
 )
 
 case class mapDimensions(
@@ -75,6 +73,8 @@ case class Exhibition(
 	, file: Option[String]
 	, file2: Option[String]
 	, file3: Option[String]
+	, width: Option[String]
+	, height: Option[String]
 )
 
 case class ExhibitionCat(
@@ -112,7 +112,7 @@ object Exhibition{
 	val query:String = """
 		SELECT id, name, name_en, level, sub, position
 		, date_begin, date_end, comment, comment_en, file1, file2, file3
-		, status_id, number, type_id, prev, next, nextcomment, tournumber
+		, status_id, number, type_id, prev, next, nextcomment, tournumber, height, width
 		FROM """+table+"""
 	"""
 
@@ -303,9 +303,11 @@ object Exhibition{
 		get[Option[Long]]("type_id")~
 		get[Option[String]]("file1")~
 		get[Option[String]]("file2")~
-		get[Option[String]]("file3") map {
-			case id~name~name_en~level~sub~position~date_begin~date_end~comment~comment_en~status_id~number~type_id~file~file2~file3 => 
-			Exhibition(id, name, name_en, level, sub, position, date_begin, date_end, comment, comment_en, status_id, number, type_id, if(file.isDefined){Some(Utils.url+file.get)}else{None}, if(file2.isDefined){Some(Utils.url+file2.get)}else{None}, if(file3.isDefined){Some(Utils.url+file3.get)}else{None})
+		get[Option[String]]("file3")~
+		get[Option[String]]("width")~
+    get[Option[String]]("height") map {
+			case id~name~name_en~level~sub~position~date_begin~date_end~comment~comment_en~status_id~number~type_id~file~file2~file3~width~height => 
+			Exhibition(id, name, name_en, level, sub, position, date_begin, date_end, comment, comment_en, status_id, number, type_id, if(file.isDefined){Some(Utils.url+file.get)}else{None}, if(file2.isDefined){Some(Utils.url+file2.get)}else{None}, if(file3.isDefined){Some(Utils.url+file3.get)}else{None}, width, height)
 		}
 	}
 
@@ -391,6 +393,8 @@ object Exhibition{
 			, status_id={status_id}
 			, number={number}
 			, type_id={type_id}
+      , width={width}
+      , height={height}
 		"""+
 		{
 			if(id>0){" WHERE id={id}"}
@@ -418,6 +422,8 @@ object Exhibition{
 				'status_id -> data.status_id,
 				'number -> data.number, 
 				'type_id -> data.type_id,
+				'width -> data.width,
+				'height -> data.height,
 				'id -> id
 			)
 			.executeUpdate
@@ -735,7 +741,7 @@ object Exhibition{
 		}
 } 
 		
-	}
+	
 		
 		def insert(id: Long, shape_id: String, shape: String){
 
@@ -807,39 +813,13 @@ object Exhibition{
 		
 	}
 
-
-		
-/*		def list(id: Long):List[Tours] = {
-			DB.withConnection{implicit c =>
-				SQL("SELECT * FROM "+table+" WHERE id={id} ORDER BY position ASC")
-				.on('id -> id)
-				.as(parser *)
-			}
-		
-
-		def detail(id: Long):Tours = {
-			DB.withConnection{implicit c =>
-				SQL("SELECT * FROM "+table+" WHERE id={id}")
-				.on('id -> id)
-				.as(parser single)
-			}
-		}
-*/
 		val parseShapes = {
 			get[String]("shape") map {
 				case shape=> 
 				shape
 			}
 		}
-		
-		val parseDimensions = {
-			get(Pk[Long])("id")~
-			get[String]("width")~
-			get[String]("height") map {
-				case id~width~height=>
-				Map(id, width, height)
-			}
-		}
+
 
 		val parseAnnotation = {
 			get[String]("annotation") map {
@@ -857,7 +837,7 @@ object Exhibition{
 				Map(id, annotation, shape, shape_id)
 			}
 		}
-
+}
 
 
 

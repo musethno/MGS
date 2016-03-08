@@ -7,9 +7,9 @@ bin/
 /logs/
 /modules
 /project/project/
-/project/project/*
+/project/project/**
 /project/target/
-/project/target/*
+/project/target/**
 /target
 
 /conf/application.conf

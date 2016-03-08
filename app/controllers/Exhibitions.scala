@@ -116,7 +116,7 @@ object Exhibitions extends Controller with Secured{
 			error => Ok(views.html.exhibition.addCat(error, Exhibition.subSelect(Some(id)), Exhibition.typesSelect, id)),
 			values => {
 
-				val data = Exhibition(NotAssigned, values.name, values.name_en, 0, Some(values.sub.getOrElse(id)), 0, None, None, None, None, true, values.number, values.type_id, None, None, None)
+				val data = Exhibition(NotAssigned, values.name, values.name_en, 0, Some(values.sub.getOrElse(id)), 0, None, None, None, None, true, values.number, values.type_id, None, None, None, None, None)
 				Exhibition.insertOrUpdate(data)
 				Redirect(routes.Exhibitions.edit(id))
 				.flashing(
@@ -177,7 +177,9 @@ object Exhibitions extends Controller with Secured{
 			"type_id" -> optional(longNumber),
 			"file" -> optional(text),
 			"file2" -> optional(text),
-			"file3" -> optional(text)
+			"file3" -> optional(text),
+			"width" -> optional(text),
+			"height" -> optional(text)
 		)(Exhibition.apply)(Exhibition.unapply)
 		verifying("form.error.number_already_exists", fields => fields match {
     case a => {

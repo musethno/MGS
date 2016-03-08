@@ -1,4 +1,4 @@
-@(values: Exhibition, dimensions: Map)
+@(values: Exhibition)
 @import helper.twitterBootstrap._
 
 
@@ -150,8 +150,8 @@
     var m_height = $("#photo").attr("data-height");
 
    L.tileLayer.zoomify('/assets/data/maps/'+@values.id.get+'/', { 
-        width: @values.m_width, 
-        height: m_height,
+        width: @values.width, 
+        height: @values.height,
         tolerance: '0.8',
         attribution: ''
     }).addTo(map);
