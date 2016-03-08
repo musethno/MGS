@@ -195,6 +195,7 @@
 		shape_id = feature.pk
 		var shape = layer.toGeoJSON();
 		annotation = feature.value
+		$(layer._path).attr("pk", shape_id);
 	    layer._path.id = 'path_'+shape_id;
 		layer._path.note_id = 'annotation_'+shape_id;
 
@@ -249,6 +250,8 @@
 		  var shape_id = uniqID.get();
 		  shape['pk'] = shape_id;
 		  var shape_for_db = JSON.stringify(shape);
+		  console.log(shape_for_db);
+		  $(layer._path).attr("pk", shape_id);
 		  layer._path.id = 'path_'+shape_id;
 		  layer._path.note_id = 'annotation_'+shape_id;
 	
@@ -297,10 +300,11 @@
 
 	    var layers = e.layers;
 	    layers.eachLayer(function (layer) {
+		shape_id = $(layer._path).attr("pk");
 		var shape = layer.toGeoJSON();
-	    shape_id = layer._path.id
-		annotation = shape.value
+		shape['pk'] = shape_id;
 		shape_for_db = JSON.stringify(shape);
+	    console.log(shape_for_db);
 			$.ajax({
 				type: 'POST',
 				url: "/admin/cat/"+@values.id.get+"/map",
@@ -321,9 +325,9 @@
 	    var layers = e.layers;
 	    layers.eachLayer(function (layer) {
 		var shape = layer.toGeoJSON();
-	    shape_id = shape.pk
-		annotation = shape.value
-		shape_for_db = JSON.stringify(shape);
+	    shape_id = $(layer._path).attr("pk");
+		console.log(shape_id);
+
 			$.ajax({
 				type: 'POST',
 				url: "/admin/cat/"+@values.id.get+"/map/delete",
