@@ -27,6 +27,7 @@ import play.mvc.BodyParser;
 //import securesocial.core.{Identity, Authorization}
 import play.Logger
 import java.io.File
+import scala.xml.XML
 import java.util.zip.{ZipEntry, ZipFile}
 import scala.collection.JavaConversions._
 
@@ -316,7 +317,7 @@ object Exhibitions extends Controller with Secured{
 							}
 						}
 						val filename:String = "main"+id+timestamp+"."+extension._2
-				    	file.ref.moveTo(new File(Utils.path+filename), true)
+				    	file.ref.moveTo(new File(Play.application.path+"/public/data/"+filename), true)
 
 				    	Exhibition.File.insert(id, filename, None, typ)
 
@@ -386,6 +387,7 @@ object Maps extends Controller with Secured {
   
  
   /* MAPS */
+
   def upload(id: Long) = Action(parse.temporaryFile) {implicit request =>
       val file_id = id
       val ext:String =".zip"

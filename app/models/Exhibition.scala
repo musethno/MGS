@@ -28,6 +28,14 @@ case class Map(
   , annotation: Option[String]
   , shape: String
   , shape_id: String
+  , width: String
+  , height: String
+)
+
+case class mapDimensions(
+   id: Pk[Long]
+   , width: String
+   , height: String
 )
 
 case class mapAnnotation(
@@ -724,7 +732,8 @@ object Exhibition{
   		// insert/update entry
   		DB.withConnection{implicit c =>
   			SQL(query).executeUpdate
-		  } 
+		}
+} 
 		
 	}
 		
@@ -797,6 +806,8 @@ object Exhibition{
   		}
 		
 	}
+
+
 		
 /*		def list(id: Long):List[Tours] = {
 			DB.withConnection{implicit c =>
@@ -821,7 +832,16 @@ object Exhibition{
 			}
 		}
 		
-			val parseAnnotation = {
+		val parseDimensions = {
+			get(Pk[Long])("id")~
+			get[String]("width")~
+			get[String]("height") map {
+				case id~width~height=>
+				Map(id, width, height)
+			}
+		}
+
+		val parseAnnotation = {
 			get[String]("annotation") map {
 				case annotation=> 
 				annotation
@@ -839,7 +859,6 @@ object Exhibition{
 		}
 
 
-	}
 
 
 

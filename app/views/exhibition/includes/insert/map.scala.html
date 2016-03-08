@@ -1,4 +1,4 @@
-@(values: Exhibition)
+@(values: Exhibition, dimensions: Map)
 @import helper.twitterBootstrap._
 
 
@@ -84,6 +84,33 @@
    <div id="photo"></div>		
    <div id="annotation">
    </div>
+    <script type="text/javascript">
+      $(document).ready(function(){
+
+	                $.ajax({
+                type: "GET",
+                url: "/assets/data/maps/"+@values.id.get+"/ImageProperties.xml",
+                dataType: "xml",
+                success: function(xml) {
+                        $(xml).find('IMAGE_PROPERTIES').each(function(){
+                                map_width = $(this).attr('WIDTH');
+                                $("#photo").attr("data-width", map_width);
+                                map_height = $(this).attr('HEIGHT');
+                                $("#photo").attr("data-height", map_height);
+                                map_version = $(this).attr('VERSION');
+                                $("#photo").attr("data-version", map_version);
+
+                         var m_width = $("#photo").attr("data-width");
+                        console.log(m_width);
+
+
+                        });
+
+                }
+                });
+        console.log(window.map_width);
+        });
+    </script>
     <script src="/assets/js/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
     <script src="/assets/js/bootstrap3-editable/js/inputs-ext/wysihtml5/wysihtml5.js"></script>
     <script src="/assets/js/leaflet/leaflet.js"></script>
@@ -93,15 +120,18 @@
     <script type="text/javascript" src="/assets/js/leaflet/L.TileLayer.Zoomify.js"></script>  
     <script type="text/javascript" src="/assets/js/bootstrap-wysihtml5/bootstrap-wysihtml5-0.0.2.js"></script>  
 	<script src="@routes.Assets.at("js/fileuploader.js")"></script>
+
+<IMAGE_PROPERTIES WIDTH="30480" HEIGHT="19143" NUMTILES="12057" NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
 	
 	
     <script type="text/javascript">
+
 
 	 var uniqID = {
 		  counter:0,
 		  get:function(prefix) {
 		      if(!prefix) {
-		          prefix = @values.id.get+'_';
+		          prefix = ''+@values.id.get+''+'_';
 		      }
 		      var id =  prefix+""+uniqID.counter++;
 		      if(jQuery("#"+id).length == 0)
@@ -111,14 +141,21 @@
 	   }
 	};
     
-    var map = L.map('photo').setView([37.8, -96], 4);
 
-    L.tileLayer.zoomify('/assets/data/maps/layer/', { 
-        width: 51472, 
-        height: 25449,
-        tolerance: 0.8,
+    
+       var map = L.map('photo').setView([37.8, -96], 4);
+    var m_width = $("#photo").attr("data-width");
+        console.log(m_width);
+
+    var m_height = $("#photo").attr("data-height");
+
+   L.tileLayer.zoomify('/assets/data/maps/'+@values.id.get+'/', { 
+        width: @values.m_width, 
+        height: m_height,
+        tolerance: '0.8',
         attribution: ''
     }).addTo(map);
+
 	var drawnItems = new L.FeatureGroup();
 	map.addLayer(drawnItems);
 
@@ -205,12 +242,12 @@
 
 	map.on('draw:created', function (e) {
 
-
+			
 		  var type = e.layerType;
 		  var layer = e.layer;
 		  var shape = layer.toGeoJSON();
 		  var shape_id = uniqID.get();
-		  shape['pk'] = layer._path.id;
+		  shape['pk'] = shape_id;
 		  var shape_for_db = JSON.stringify(shape);
 		  layer._path.id = 'path_'+shape_id;
 		  layer._path.note_id = 'annotation_'+shape_id;
