@@ -10,22 +10,22 @@
 
 
         <style type="text/css">
-        html, body, .container {
+       	.container {
         height: 100%;
         width: 100%;
         }
-        
+        #mapcontainer {
+        height: 90%;
+        padding-top: 22px;
+        }
         #photo {
-       float: left;
-		width: 70%;
-        height: 30%;
-
+		width: 100%;
+        height: 90%;
         }
         
         #annotation {
-        float: left;
-        height: 30%;
-        width: 30%;
+        height: 10%;
+        width: 100%;
         }
         
         html, body {
@@ -49,40 +49,9 @@
         }
     </style>
 
-		<div id="file-uploader">
-
-		    <noscript>
-		        <p>Please enable JavaScript to use file uploader.</p>
-		        <!-- or put a simple form for upload here -->
-		    </noscript>
-			
-			<script src="@routes.Assets.at("js/fileuploader.js")"></script>
-			<script>
-				function createUploader(){
-					var uploader = new qq.FileUploader({
-						element: document.getElementById('file-uploader'),
-						action: '/admin/cat/@values.id.get/map/upload',
-						debug: true,
-						text: {
-							uploadButton: '<div><i class="icon-upload icon-white"></i> Test me now and upload a file</div>'
-						},
-						template: '<div class="qq-uploader span12">' +
-							'<pre class="qq-upload-drop-area span12"><span>Drag file here</span></pre>' +
-							'<div class="qq-upload-button btn btn-primary" style="width: auto;">@Messages("upload_file")</div>' +
-							'<span class="qq-drop-processing"><span>{dropProcessingText}</span><span class="qq-drop-processing-spinner"></span></span>' +
-							'<ul class="qq-upload-list" style="margin-top: 10px; text-align: center;"></ul>' +
-							'</div>',
-					});
-				}
-
-				// in your app create uploader as soon as the DOM is ready
-				// don't wait for the window to load
-				window.onload = createUploader;
-			</script>
-
-		</div>
-   <div id="photo"></div>		
-   <div id="annotation">
+   <div id="mapcontainer">		
+   		<div id="photo"></div>		
+   		<div id="annotation"></div>
    </div>
     <script type="text/javascript">
       $(document).ready(function(){
@@ -159,35 +128,6 @@
 	var drawnItems = new L.FeatureGroup();
 	map.addLayer(drawnItems);
 
-	var drawControl = new L.Control.Draw({
-		draw: {
-			position: 'topleft',
-			polygon: {
-				allowIntersection: false,
-				drawError: {
-					color: '#b00b00',
-					timeout: 1000
-				},
-				shapeOptions: {
-					color: '#bada55'
-				},
-				showArea: true
-			},
-			polyline: {
-				metric: false
-			},
-			circle: {
-				shapeOptions: {
-					color: '#662d91'
-				}
-			}
-		},
-		edit: {
-			featureGroup: drawnItems
-		}
-	});
-
-	map.addControl(drawControl);
 	
 	function onEachFeature(feature, layer) {
 
