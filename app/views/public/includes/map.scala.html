@@ -159,19 +159,7 @@
 		layer._path.note_id = 'annotation_'+shape_id;
 
         $("#annotation").append('<div class="annotation_single" id="'+layer._path.note_id+'"><a href="#" id="'+shape_id+'" data-url="/admin/cat/@values.id.get/map" data-pk="'+shape_id+'" data-type="textarea" data-placement="right" data-title="annotation">'+annotation+'</a></div>');
-		$.fn.editable.defaults.mode = 'inline';
- 			 	$('#'+shape_id).editable({
- 					ajaxOptions: {
- 						contentType: 'application/json'
- 						, dataType: 'json'
- 						},
- 					params: function(params) {
- 						shape.value = params.value
- 						$.extend( true, params, shape );
 
- 						return JSON.stringify(params); 
- 					}
-		});
 		$("#"+layer._path.id).click(function(){
 			$(".selected").removeClass("selected").addClass("notselected");
 			$("#"+layer._path.note_id).addClass("selected").removeClass("notselected");
