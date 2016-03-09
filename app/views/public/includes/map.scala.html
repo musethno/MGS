@@ -158,6 +158,36 @@
 
 	var drawnItems = new L.FeatureGroup();
 	map.addLayer(drawnItems);
+
+	var drawControl = new L.Control.Draw({
+		draw: {
+			position: 'topleft',
+			polygon: {
+				allowIntersection: false,
+				drawError: {
+					color: '#b00b00',
+					timeout: 1000
+				},
+				shapeOptions: {
+					color: '#bada55'
+				},
+				showArea: true
+			},
+			polyline: {
+				metric: false
+			},
+			circle: {
+				shapeOptions: {
+					color: '#662d91'
+				}
+			}
+		},
+		edit: {
+			featureGroup: drawnItems
+		}
+	});
+
+	map.addControl(drawControl);
 	
 	function onEachFeature(feature, layer) {
 
@@ -194,9 +224,15 @@
   							
 	}
 
+	var myStyle = {
+	 "color": "#ff7800",
+	 "stroke": false,
+	 "fillOpacity": 0
+	};
 
 	L.geoJson(shapeCollection, {
-    	onEachFeature: onEachFeature
+    	onEachFeature: onEachFeature,
+    	style: myStyle
 	}).addTo(map);
 	
 	map.on('draw:created', function (e) {
@@ -213,7 +249,6 @@
 
 
 		
-
 
 
 	        
