@@ -1,23 +1,254 @@
 @(values: Exhibition)
+@import helper.twitterBootstrap._
 
-				<div class="row" style="height: 100%">
-					<div class="col-md-12 col-xs-12-p cms-element"  style="height: 100%">
-						<div class="col-md-12 col-xs-12-p media-main"  style="height: 100%">
-						
-						
-                        	<div id="item-text" class="col-md-12 col-xs-12-p text-left">
-                        	
-                        	
-                        	<!--  
-                        		<span class="de">@Html(values.comment.getOrElse(""))</span>
-								@if(values.comment_en.isDefined){<span class="en">@Html(values.comment_en.getOrElse(""))</span>}
-							-->
-							
-							
-							
-							
-							</div>
 
+							
+    <link rel="stylesheet" href="/assets/css/leaflet.css" />
+    <link rel="stylesheet" href="/assets/js/leaflet/leaflet.draw/leaflet.draw.css" />
+    <link rel="stylesheet" href="/assets/js/bootstrap3-editable/css/bootstrap-editable.css" />
+    <link rel="stylesheet" href="/assets/js/bootstrap-wysihtml5/bootstrap-wysihtml5-0.0.2.css" />
+
+
+        <style type="text/css">
+        html, body, .container {
+        height: 100%;
+        width: 100%;
+        }
+        
+        #photo {
+       float: left;
+		width: 70%;
+        height: 30%;
+
+        }
+        
+        #annotation {
+        float: left;
+        height: 30%;
+        width: 30%;
+        }
+        
+        html, body {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        #textcontainer {
+        	bottom: 0px;
+        	width: 50%;
+        }
+        
+        #textcontainer p {
+       		font-family: sans-serif;
+        	color: white;
+        	font-size: 20px;
+        }        
+        
+        .annotation_single {
+        	display: none;
+        }
+    </style>
+
+		<div id="file-uploader">
+
+		    <noscript>
+		        <p>Please enable JavaScript to use file uploader.</p>
+		        <!-- or put a simple form for upload here -->
+		    </noscript>
+			
+			<script src="@routes.Assets.at("js/fileuploader.js")"></script>
+			<script>
+				function createUploader(){
+					var uploader = new qq.FileUploader({
+						element: document.getElementById('file-uploader'),
+						action: '/admin/cat/@values.id.get/map/upload',
+						debug: true,
+						text: {
+							uploadButton: '<div><i class="icon-upload icon-white"></i> Test me now and upload a file</div>'
+						},
+						template: '<div class="qq-uploader span12">' +
+							'<pre class="qq-upload-drop-area span12"><span>Drag file here</span></pre>' +
+							'<div class="qq-upload-button btn btn-primary" style="width: auto;">@Messages("upload_file")</div>' +
+							'<span class="qq-drop-processing"><span>{dropProcessingText}</span><span class="qq-drop-processing-spinner"></span></span>' +
+							'<ul class="qq-upload-list" style="margin-top: 10px; text-align: center;"></ul>' +
+							'</div>',
+					});
+				}
+
+				// in your app create uploader as soon as the DOM is ready
+				// don't wait for the window to load
+				window.onload = createUploader;
+			</script>
+
+		</div>
+   <div id="photo"></div>		
+   <div id="annotation">
+   </div>
+    <script type="text/javascript">
+      $(document).ready(function(){
+
+	                $.ajax({
+                type: "GET",
+                url: "/assets/data/maps/"+@values.id.get+"/ImageProperties.xml",
+                dataType: "xml",
+                success: function(xml) {
+                        $(xml).find('IMAGE_PROPERTIES').each(function(){
+                                map_width = $(this).attr('WIDTH');
+                                $("#photo").attr("data-width", map_width);
+                                map_height = $(this).attr('HEIGHT');
+                                $("#photo").attr("data-height", map_height);
+                                map_version = $(this).attr('VERSION');
+                                $("#photo").attr("data-version", map_version);
+
+                         var m_width = $("#photo").attr("data-width");
+                        console.log(m_width);
+
+
+                        });
+
+                }
+                });
+        console.log(window.map_width);
+        });
+    </script>
+    <script src="/assets/js/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+    <script src="/assets/js/bootstrap3-editable/js/inputs-ext/wysihtml5/wysihtml5.js"></script>
+    <script src="/assets/js/leaflet/leaflet.js"></script>
+    <script src="/assets/js/leaflet/leaflet.draw/leaflet.draw.js"></script>
+    <script src="/assets/js/leaflet/leaflet.draw/leaflet.draw-src.js"></script>
+	<script src="/admin/cat/@values.id.get/map/serve.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/assets/js/leaflet/L.TileLayer.Zoomify.js"></script>  
+    <script type="text/javascript" src="/assets/js/bootstrap-wysihtml5/bootstrap-wysihtml5-0.0.2.js"></script>  
+	<script src="@routes.Assets.at("js/fileuploader.js")"></script>
+
+<IMAGE_PROPERTIES WIDTH="30480" HEIGHT="19143" NUMTILES="12057" NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
+	
+	
+    <script type="text/javascript">
+
+
+	 var uniqID = {
+		  counter:0,
+		  get:function(prefix) {
+		      if(!prefix) {
+		          prefix = ''+@values.id.get+''+'_';
+		      }
+		      var id =  prefix+""+uniqID.counter++;
+		      if(jQuery("#"+id).length == 0)
+		          return id;
+		      else
+		          return uniqID.get()	
+	   }
+	};
+    
+
+    
+       var map = L.map('photo').setView([37.8, -96], 4);
+    var m_width = $("#photo").attr("data-width");
+        console.log(m_width);
+
+    var m_height = $("#photo").attr("data-height");
+
+   L.tileLayer.zoomify('/assets/data/maps/'+@values.id.get+'/', { 
+        width: @values.width, 
+        height: @values.height,
+        tolerance: '0.8',
+        attribution: ''
+    }).addTo(map);
+
+	var drawnItems = new L.FeatureGroup();
+	map.addLayer(drawnItems);
+
+	var drawControl = new L.Control.Draw({
+		draw: {
+			position: 'topleft',
+			polygon: {
+				allowIntersection: false,
+				drawError: {
+					color: '#b00b00',
+					timeout: 1000
+				},
+				shapeOptions: {
+					color: '#bada55'
+				},
+				showArea: true
+			},
+			polyline: {
+				metric: false
+			},
+			circle: {
+				shapeOptions: {
+					color: '#662d91'
+				}
+			}
+		},
+		edit: {
+			featureGroup: drawnItems
+		}
+	});
+
+	map.addControl(drawControl);
+	
+	function onEachFeature(feature, layer) {
+
+		drawnItems.addLayer(layer)
+		shape_id = feature.pk
+		var shape = layer.toGeoJSON();
+		annotation = feature.value
+		$(layer._path).attr("pk", shape_id);
+	    layer._path.id = 'path_'+shape_id;
+		layer._path.note_id = 'annotation_'+shape_id;
+
+        $("#annotation").append('<div class="annotation_single" id="'+layer._path.note_id+'"><a href="#" id="'+shape_id+'" data-url="/admin/cat/@values.id.get/map" data-pk="'+shape_id+'" data-type="textarea" data-placement="right" data-title="annotation">'+annotation+'</a></div>');
+		$.fn.editable.defaults.mode = 'inline';
+ 			 	$('#'+shape_id).editable({
+ 					ajaxOptions: {
+ 						contentType: 'application/json'
+ 						, dataType: 'json'
+ 						},
+ 					params: function(params) {
+ 						shape.value = params.value
+ 						$.extend( true, params, shape );
+
+ 						return JSON.stringify(params); 
+ 					}
+		});
+		$("#"+layer._path.id).click(function(){
+			$(".selected").removeClass("selected").addClass("notselected");
+			$("#"+layer._path.note_id).addClass("selected").removeClass("notselected");
+			$(".notselected").hide();				
+			$(".selected").fadeIn();
+
+		}); 
+
+  							
+	}
+
+
+	L.geoJson(shapeCollection, {
+    	onEachFeature: onEachFeature
+	}).addTo(map);
+	
+	map.on('draw:created', function (e) {
+		var type = e.layerType,
+			layer = e.layer;
+
+		if (type === 'marker') {
+			layer.bindPopup('A popup!');
+		}
+
+		drawnItems.addLayer(layer);
+		
+	});
+
+
+		
+
+
+
+	        
+    </script>
+</div>
 <div id="textcontainer">
 </div>
 							
