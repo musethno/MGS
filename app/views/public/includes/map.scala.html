@@ -94,7 +94,26 @@
 	
 	
     <script type="text/javascript">
+	function getParameterByName(name, url) {
+	    if (!url) url = window.location.href;
+	    name = name.replace(/[\[\]]/g, "\\$&");
+	    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+	        results = regex.exec(url);
+	    if (!results) return null;
+	    if (!results[2]) return '';
+	    return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
 
+	$( document ).ready(function(){
+		var queryStr = getParameterByName('fullscreen');
+		if(queryStr == "true"){
+			$(".navbar").hide();
+			$("#content").css("padding-top", "0px");
+			$(".container").css("padding", "0px 0px 0px 0px");
+			$("#mapcontainer").css("height", "100%");
+			$("#mapcontainer").css("padding-top", "0px");
+		}
+	});
 
 	 var uniqID = {
 		  counter:0,
