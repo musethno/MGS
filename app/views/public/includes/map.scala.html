@@ -158,7 +158,7 @@
 	    layer._path.id = 'path_'+shape_id;
 		layer._path.note_id = 'annotation_'+shape_id;
 
-        $("#annotation").append('<div class="annotation_single" id="'+layer._path.note_id+'"><a href="#" id="'+shape_id+'" data-url="/admin/cat/@values.id.get/map" data-pk="'+shape_id+'" data-type="textarea" data-placement="right" data-title="annotation">'+annotation+'</a></div>');
+        $("#annotation").append('<div class="annotation_single" id="'+layer._path.note_id+'">annotation</div>');
 
 		$("#"+layer._path.id).click(function(){
 			$(".selected").removeClass("selected").addClass("notselected");
