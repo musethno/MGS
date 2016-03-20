@@ -6,10 +6,10 @@
 	
 <div class="row">
 			@if(exhibition.file2.isDefined){
-			<img class="title-img" src="/detail/@exhibition.file2.get">
+			<img class="title-img" src="/@exhibition.file2.get">
 			}
 </div>
-
+ 
 
 <div class="row">
 			
@@ -58,7 +58,7 @@
 		<span class="col-xs-2 col-md-2 text-right">@if(m.number.isDefined){@formatter.format(m.number.getOrElse(0))}</span>
 		<span class="col-xs-2 col-md-1">@if(m.type_id.isDefined){
 			<span class="glyphicon">
-			<img style="height: 30px; margin-top: -7px;" src="/assets/img/icons/blau/@(types.filter((a: (Option[Long], String, Option[String])) => a._1==m.type_id).head._3.getOrElse("")).png"></span>
+			<img style="height: 30px; margin-top: -7px;" src="../assets/img/icons/blau/@(types.filter((a: (Option[Long], String, Option[String])) => a._1==m.type_id).head._3.getOrElse("")).png"></span>
 		}</span>
         <span class="de col-xs-8 col-md-9 text-left smenu-text">@m.name</span>
         <span class="en col-xs-8 col-md-9 text-left smenu-text">@m.name_en</span>

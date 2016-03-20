@@ -1,0 +1,13 @@
+@(values: Exhibition)
+				<div class="row">
+					<div class="col-md-12 col-xs-12-p cms-element" >
+						<div class="col-md-12 col-xs-12-p media-main" >
+                        	<div id="item-text" class="col-md-12 col-xs-12-p text-left">
+								<span class="de">@Html(values.comment.getOrElse(""))</span>
+									@if(values.comment_en.isDefined){
+											<span class="en">
+												@Html(values.comment_en.getOrElse(""))
+											</span>
+										}
+							</div>
+					

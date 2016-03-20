@@ -6,8 +6,16 @@ bin/
 /lib/
 /logs/
 /modules
-/project/project
+/project/project/
+/project/project/**
+/project/target/
+/project/target/**
 /target
+
+/conf/application.conf
+
+/public/data
+/public/data/*
 tmp/
 test-result
 server.pid
@@ -17,3 +25,4 @@ server.pid
 *.*save*
 *.*~
 *.DS_Store
+/.target/

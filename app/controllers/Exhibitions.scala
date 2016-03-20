@@ -1,6 +1,7 @@
 package controllers
 
 import play.api._
+
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
@@ -14,12 +15,22 @@ import anorm._
 import play.api.db._
 import play.api.Play.current
 
+import play.mvc.BodyParser;
+
 import play.api.libs.json.Json
 import play.api.libs.json.JsValue
+import play.api.libs.json.JsObject
 
+import com.fasterxml.jackson.databind.JsonNode;
+import play.mvc.BodyParser;
 
 //import securesocial.core.{Identity, Authorization}
 import play.Logger
+import java.io.File
+import scala.xml.XML
+import java.util.zip.{ZipEntry, ZipFile}
+import scala.collection.JavaConversions._
+
 
 object Exhibitions extends Controller with Secured{
 	
@@ -105,7 +116,7 @@ object Exhibitions extends Controller with Secured{
 			error => Ok(views.html.exhibition.addCat(error, Exhibition.subSelect(Some(id)), Exhibition.typesSelect, id)),
 			values => {
 
-				val data = Exhibition(NotAssigned, values.name, values.name_en, 0, Some(values.sub.getOrElse(id)), 0, None, None, None, None, true, values.number, values.type_id, None, None, None)
+				val data = Exhibition(NotAssigned, values.name, values.name_en, 0, Some(values.sub.getOrElse(id)), 0, None, None, None, None, true, values.number, values.type_id, None, None, None, None, None)
 				Exhibition.insertOrUpdate(data)
 				Redirect(routes.Exhibitions.edit(id))
 				.flashing(
@@ -166,7 +177,9 @@ object Exhibitions extends Controller with Secured{
 			"type_id" -> optional(longNumber),
 			"file" -> optional(text),
 			"file2" -> optional(text),
-			"file3" -> optional(text)
+			"file3" -> optional(text),
+			"width" -> optional(text),
+			"height" -> optional(text)
 		)(Exhibition.apply)(Exhibition.unapply)
 		verifying("form.error.number_already_exists", fields => fields match {
     case a => {
@@ -306,7 +319,7 @@ object Exhibitions extends Controller with Secured{
 							}
 						}
 						val filename:String = "main"+id+timestamp+"."+extension._2
-				    	file.ref.moveTo(new File(Utils.path+filename), true)
+				    	file.ref.moveTo(new File(Play.application.path+"/public/data/"+filename), true)
 
 				    	Exhibition.File.insert(id, filename, None, typ)
 
@@ -334,31 +347,10 @@ object Exhibitions extends Controller with Secured{
 	}
 
 
-
-/*
-	
-	def upload(id: Long) = Action(parse.temporaryFile) {implicit request =>
-		val file_id = Exhibition.Gallery.insert(id)
-		val ext:String =".jpg"
-
-		import java.io.File
-		val resultString = try {
-			
-			val filename:String = Exhibition.Gallery.table+"."+file_id.get+ext
-			val file = new File(Utils.path+filename)
-		  	request.body.moveTo(file, true)
-			Exhibition.Gallery.insertFileName(file_id.get, filename)
-
-			"file has been uploaded"
-		} catch {
-			case e: Exception => "an error has occurred while uploading the file"
-		}
-
-		Ok("{success: true}")
-	}
-*/
 	
         def upload(id: Long) = Action(parse.temporaryFile) {implicit request =>
+           // request.body.moveTo(new File(Play.application.path+"/public/data/picturetest"))
+            Ok("File uploaded")
                 val file_id = Exhibition.Gallery.insert(id)
                 //val mess = Utils.File.upload(request, file_id.get, "gallery")
 
@@ -368,7 +360,7 @@ object Exhibitions extends Controller with Secured{
                 import java.io.File
                 val resultString = try {
 						val filename:Option[String] = Option[String](Exhibition.Gallery.table+"."+file_id.get+ext)
-                        val file = new File(Utils.path+Exhibition.Gallery.table+"."+file_id.get+ext)
+                        val file = new File(Play.application.path+"/public/data/"+file_id.get+ext)
                         request.body.moveTo(file, true)
 			Exhibition.Gallery.insertFileName(file_id.get, filename)
 
@@ -391,9 +383,127 @@ object Exhibitions extends Controller with Secured{
   		)
 	}
 
-
 }
 
+object Maps extends Controller with Secured {
+  
+ 
+  /* MAPS */
+
+  def upload(id: Long) = Action(parse.temporaryFile) {implicit request =>
+      val file_id = id
+      val ext:String =".zip"
+      val fileName: String = id.toString
+      val filePath: String = Play.application.path+"/public/data/maps/"+fileName+"/"
+      Logger.info(fileName)
+      val resultString = try {
+			//val filename:Option[String] = Option[String](Exhibition.Gallery.table+"."+file_id.get+ext)
+      val file = new File(filePath+fileName+ext)
+      request.body.moveTo(file, true)
+    		//Exhibition.Gallery.insertFileName(file_id, filename)
+      
+      Utils.File.unZip(filePath+fileName+ext, filePath)
+
+      } catch {
+      case e: Exception => "an error has occurred while upload-ing the file"
+      }
+     Ok("{success: true}")
+  }
+
+	
+def updateMap(id: Long) = Action { request =>
+  request.body.asJson.map { json =>
+     val shape_id = (json \ "pk").toString().replace("\"", "");
+      val shape = json.toString
+      val test = Exhibition.Maps.serveSingle(id, shape_id);
+      if(test.isEmpty){
+         Exhibition.Maps.insert(id, shape_id, shape)
+      } else {
+         Exhibition.Maps.update(id, shape_id, shape)
+      }
+      
+      
+      Ok(json)
+  }.getOrElse {
+    BadRequest("Expecting Json data")
+  }
+}
+
+def deleteShape(id: Long) = Action { request =>
+  val body: AnyContent = request.body
+  val textBody: Option[String] = body.asText 
+  
+  // Expecting text body
+  textBody.map { text =>
+      Exhibition.Maps.delete(text)
+    Ok("Got: " + text)
+  }.getOrElse {
+    BadRequest("Expecting text/plain request body")  
+  }
+  
+}
+
+
+
+  
+  
+
+def annotateMap(id: Long) = Action { request =>
+  request.body.asJson.map { json =>
+      val shape_id = (json \ "pk").toString().replace("\"", "");
+      val annotation = (json \ "value").toString
+      
+//      var feature  = Json.toJson(Exhibition.Maps.serveSingle(id, shape_id))   
+//      val t: JsObject = feature.as[JsObject] ++ Json.obj("annotation" -> annotation)
+//      val shape=t.toString
+//      Exhibition.Maps.update(id, shape_id, shape)
+     
+      Exhibition.Maps.annotate(shape_id, annotation)
+      Ok(json)
+  }.getOrElse {
+    BadRequest("Expecting Json data")
+  }
+}
+/*
+def serveMaps(id: Long) = Action { request =>
+  request.body.asJson.map { json =>
+      Exhibition.Maps.serve(id)
+      Ok(json)
+  }.getOrElse {
+    BadRequest("Expecting Json data")
+  }
+}
+*/
+
+
+  def serveMaps(id: Long) = Action{implicit request => 
+  import play.api.libs.json.Json
+  
+
+    var p = Exhibition.Maps.serve(id)  
+    var shapes = ""
+    for (feature <- p) shapes=shapes+feature.toString+", "
+      
+    var str = "var shapeCollection = {\"type\": \"FeatureCollection\", \"features\": ["+shapes+"]};"
+
+    
+    Ok(str)
+  }
+
+
+  def serveAnnotation(id: Long, shape_id: String) = Action{implicit request => 
+  import play.api.libs.json.Json
+ 
+    var feature  = Exhibition.Maps.serveSingle(id, shape_id).toString
+    //var p = Exhibition.Maps.serveSingle(id, shape_id).toString
+
+    
+    Ok(feature)
+  }
+
+
+
+}
 
 object Galleries extends Controller with Secured{
         def move(id: Long, sid: Long, parent_id: Long, upOrDown: Boolean) = IsAuthenticated{user => _ =>
@@ -444,52 +554,3 @@ object Galleries extends Controller with Secured{
 }
 
 
-/*
-object Galleries extends Controller with Secured{
-	def move(id: Long, sid: Long, parent_id: Long, upOrDown: Boolean) = IsAuthenticated{user => _ =>
-		Exhibition.Gallery.move(id,sid, upOrDown)
-		Redirect(routes.Exhibitions.editSub(sid, parent_id))
-	}
-
-	def insert(id: Long, parent_id: Long) = IsAuthenticated{user => _ =>
-		Exhibition.Gallery.insert(id)
-
-				Redirect(routes.Exhibitions.editSub(id, parent_id))
-				.flashing(
-    				"success" -> "cat.edited.successfully"
-  				)
-	}
-
-	
-	def update(id: Long) = IsAuthenticated{user => implicit request =>
-		import play.api.libs.json.Json
-
-		myForm.bindFromRequest.fold(
-			errors 	=> {
-				val r = 
-				Json.stringify(Json.obj(
-					"status" -> "error"
-				))
-				Ok(r)
-			},
-			data		=> {
-				Exhibition.Gallery.update(id, data)
-				val r = 
-				Json.stringify(Json.obj(
-					"status" -> "ok",
-					"caption" -> data.caption
-				))
-				Ok(r)
-			}
-		)
-	}
-
-
-	val myForm = Form(
-		mapping(
-			"caption" -> optional(text)
-		)	
-		(Gallery_e.apply)(Gallery_e.unapply)
-	)
-}
-*/

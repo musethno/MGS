@@ -1,0 +1,30 @@
+@(id: Long, parent_id: Long, values: Exhibition, myForm: Form[Exhibition], types: Seq[(String, String)] )
+@import helper._
+<div class="row">
+	<div class="col-md-6">
+	<h2>@Messages("file")</h2>
+
+	@form(action = routes.Exhibitions.insertFile(id, parent_id, 2), 'enctype -> "multipart/form-data") {
+
+		<input type="file" name="file">
+		<input class="btn btn-primary" type="submit" value="@Messages("add")">
+
+		@if(values.file2.isDefined){
+			<a class="btn btn-danger" href="@routes.Exhibitions.deleteFile(id, parent_id, 2)">@Messages("delete")</a>
+		}
+	}
+
+	
+	<div class="col-md-6">
+	<h2>@Messages("preview")</h2>
+
+	@if(values.file2.isDefined){
+
+			<img class="col-md-12" src="/detail/@values.file2.get">
+			
+	}else{
+		@Messages("no_preview")
+	}
+
+	</div>
+</div>

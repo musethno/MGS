@@ -5,17 +5,23 @@
 
 <div class="row">
 			@if(exhibition.file2.isDefined){
-			<img class="title-img" src="@exhibition.file2.get">
+			<img class="title-img" src="/@exhibition.file2.get">
 			}
 </div>
 
 <div class="row">
 
 @menus.map{m=>
-	<a href="@routes.Application.submenu(m.id.get)" class="col-xs-12 col-md-12 menu-element text-center">
+	@if(m.type_id.isDefined){
+	<a href="@routes.Application.detail(m.id.get)
+	} else {
+	<a href="@routes.Application.submenu(m.id.get)
+	}
+	" class="col-xs-12 col-md-12 menu-element text-center">
 		<span class="en">@m.name_en</span>
 		<span class="de">@m.name</span>
 	</a>
+
 }
 
 </div>

@@ -19,22 +19,25 @@ import java.io.File
 import play.libs.Json;
 
 
-
+ 
 object Application extends Controller with ChangeLanguage with Secured{
 
-  
+
   def index = Action{implicit request => 
-    var install_flag =  Utils.flag();
-    if(install_flag == Some(0)){
-      Ok(views.html.public.home(
+    val install_flag = Utils.flag()
+    
+    if(install_flag == Some(1)){
+    Ok(views.html.public.home(
   		  Exhibition.list(Some(0)).filter((a: Exhibition) => a.status_id)
         ))
-    }  
+    } 
     else{
-      Ok("error")
+      Ok(views.html.public.firstrun())
     }
       
   }
+  
+
 
   def menu(id: Long) = Action{implicit request => 
 
@@ -213,14 +216,21 @@ object Application extends Controller with ChangeLanguage with Secured{
     )
   }
 
-
-
   /* static pages */
   def impressum = Action {
     Ok(views.html.public.impressum())
   }
+  
+  
+  /* static pages */
+  def firstrun = Action {
+    Ok(views.html.public.firstrun())
+  }
+  
 
 }
+
+
 
 
 
@@ -230,8 +240,6 @@ object Application extends Controller with ChangeLanguage with Secured{
 
 trait Secured {
 	
-  
-  
   	private def username(request: RequestHeader):Option[User] = {
 
       if(request.session.get("id").isDefined && request.session.get("email").isDefined && request.session.get("name").isDefined){

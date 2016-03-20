@@ -1,0 +1,26 @@
+@(myForm: Form[User_e], id: Long)
+
+@import helper._
+
+@main(Messages("user")) {
+	@if(myForm.hasErrors) {
+        <div class="alert-message error">
+            <p><strong>Oops</strong> Please fix all errors</p>
+        </div>
+    }
+	
+	
+	@form(routes.Users.init) { 
+	
+	@inputText(myForm("name"), '_label -> Messages("name"))
+	@inputText(myForm("email"), '_label -> Messages("email"))
+
+
+	<div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="@Messages(if(id>0){"edit"}else{"add"})">
+        <a href="@routes.Users.list" class="btn btn-danger">@Messages("back")</a>
+    </div>	
+
+	}
+	
+}

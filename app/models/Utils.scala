@@ -9,6 +9,8 @@ import anorm.SqlParser._
 
 import java.util.Date
 
+import java.io.{ IOException, FileOutputStream, FileInputStream, File }
+import java.util.zip.{ ZipEntry, ZipInputStream }
 
 import play.api.templates.Html
 
@@ -70,8 +72,8 @@ object Utils{
 	}
 
 	// constants
-	val path ="/var/data-museum/" // live server path...
-	val url = "data-museum/" // live server data file url
+	val path ="assets/data/" // live server path...
+	val url = "assets/data/" // live server data file url
 	//val path ="/var/www/html/data-museum/" //testing data url in apache public html
 	//val url = "http://192.168.1.77/data-museum/" // testing - on port 80 @ arx
 	//val url = "http://roggwil.akehir.com/data-museum/" // testing - on port 80 @ mobi
@@ -83,12 +85,12 @@ object Utils{
 		DB.withConnection { implicit c =>
 			val row = 
 				SQL(""" 	
-					SELECT install_fresh
+					SELECT install_flag
 					FROM system
 				""")
 				.apply().head
 					
-			row[Option[Int]]("install_fresh")
+			row[Option[Int]]("install_flag")
 		}
 	}
 
@@ -159,6 +161,54 @@ object Utils{
 	}
 
 	object File{
+import java.io.{OutputStream, InputStream, File, FileOutputStream}
+import java.util.zip.{ZipEntry, ZipFile}
+import scala.collection.JavaConversions._
+
+ val BUFSIZE = 4096
+  val buffer = new Array[Byte](BUFSIZE)
+
+  def unZip(source: String, targetFolder: String) = {
+    val zipFile = new ZipFile(source)
+
+    unzipAllFile(zipFile.entries.toList, getZipEntryInputStream(zipFile)_, new File(targetFolder))
+  }
+
+  def getZipEntryInputStream(zipFile: ZipFile)(entry: ZipEntry) = zipFile.getInputStream(entry)
+
+  def unzipAllFile(entryList: List[ZipEntry], inputGetter: (ZipEntry) => InputStream, targetFolder: File): Boolean = {
+
+    entryList match {
+      case entry :: entries =>
+
+        if (entry.isDirectory)
+          new File(targetFolder, entry.getName).mkdirs
+        else
+          saveFile(inputGetter(entry), new FileOutputStream(new File(targetFolder, entry.getName)))
+
+        unzipAllFile(entries, inputGetter, targetFolder)
+      case _ =>
+        true
+    }
+  }
+
+  def saveFile(fis: InputStream, fos: OutputStream) = {
+    writeToFile(bufferReader(fis)_, fos)
+    fis.close
+    fos.close
+  }
+
+  def bufferReader(fis: InputStream)(buffer: Array[Byte]) = (fis.read(buffer), buffer)
+
+  def writeToFile(reader: (Array[Byte]) => Tuple2[Int, Array[Byte]], fos: OutputStream): Boolean = {
+    val (length, data) = reader(buffer)
+    if (length >= 0) {
+      fos.write(data, 0, length)
+      writeToFile(reader, fos)
+    } else
+      true
+  }
+
 
 
  		def upload(request: play.api.mvc.Request[play.api.libs.Files.TemporaryFile], id: Long, table: String) : String = {

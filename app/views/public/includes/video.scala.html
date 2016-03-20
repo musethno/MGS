@@ -1,0 +1,32 @@
+@(values: Exhibition, formatter: java.text.DecimalFormat)
+					
+					<div class="row">
+	<div class="col-md-12 col-xs-12-p cms-element" >
+		<div class="col-md-12 col-xs-12-p media-main" >
+					
+								</div></div></div>
+<!-- End Row 1 -->
+		<div id="item-title" class="row" >						
+	<div class="col-md-12 col-xs-12-p cms-element" >
+		<div class="col-md-12 col-xs-12-p media-main" >
+										
+
+								@if(values.number.isDefined){@formatter.format(values.number.get)} @if(values.name_en.isDefined){<div class="en">@values.name_en</div>}<div class="de">@values.name</a></div>
+								
+								</div></div></div>
+<!-- End Row 2 -->
+		<div id="media-container" class="row" >						
+	<div class="col-md-12 col-xs-12-p cms-element" >
+		<div class="col-md-12 col-xs-12-p media-main" >
+			
+						@if(values.file.isDefined){
+							<video id="videoContent" preload="none" controls class="col-md-12 col-xs-12-p text-center" style="min-height: 62%;" @if(values.file2.isDefined){poster="@values.file2.get"}>
+								<source src="@values.file.get" type="video/mp4">
+								<source src="@values.file.get.substring(0, values.file.get.lastIndexOf(".")).concat(".webm")" type="video/webm">
+								Sorry - your browser cannot display this video.
+							</video>
+						}else{							<div class="col-md-12 col-xs-12-p ">
+								<i>@Messages("no_content")</i>
+							</div>
+						}
+					

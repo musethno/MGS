@@ -97,6 +97,7 @@ object User {
 	      ).as(simple *)
 	    }
 	}
+	
 
 	def insertOrUpdate(user: User_e, id: Long = 0) {
 

@@ -1,0 +1,33 @@
+@(id: Long, parent_id: Long, values: Exhibition, myForm: Form[Exhibition], types: Seq[(String, String)] )
+@import helper._
+
+		<div class="row">
+			<div class="col-md-12">
+				<form method="post" class="form-horizontal" role="form" accept-charset="UTF-8" action="@routes.Exhibitions.updateSub(id, parent_id)">
+					@inputText(myForm("name"), '_label -> "name_cat")
+					@inputText(myForm("name_en"), '_label -> "name_cat_en")
+					@inputText(myForm("number"))
+					@select(myForm("type_id"), types, '_class-> "disabled")
+					@textarea(myForm("comment"))
+					@textarea(myForm("comment_en"))
+					@inputText(myForm("width"), '_label -> "Imagemap: Breite"))
+					@inputText(myForm("height"), '_label -> "Imagemap: Höhe"))
+						<div class="col-md-3">
+					</div>
+						<div class="actions col-md-9">
+						<input type="submit" class="btn btn-primary" value="@if(id>0){@Messages("edit")}else{@Messages("add")}">
+							<a class="btn btn-info" href="@if(values.type_id.isDefined){@routes.Application.detail(id)}else{@routes.Application.submenu(id)}" target="_blank">
+								@Messages("preview")
+							</a>
+							<a href="@routes.Exhibitions.edit(parent_id)" class="btn btn-default">
+								@Messages("back")
+							</a>
+							@if(id>0){
+							<a href="@routes.Exhibitions.delete(id)" class="btn btn-danger">
+								Messages("delete")
+							</a>
+							}
+						</div>	
+				</form>
+			</div>	
+		</div>
