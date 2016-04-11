@@ -1,58 +1,56 @@
-texto_en_idioma	= Test: Set to English
-languages	=	Languages
-selectlanguage = Please choose your language
+texto_en_idioma = Test: Set to German
+languages 	= Sprachen
+selectlanguage = Bitte Sprache wählen
 lang.de		=	Deutsch
-lang.en-US	= English
-no_num_row = No data found
-user.add			= Add User
+lang.en-US		=	English
+no_num_row = Keine Daten vorhanden
+user.add			= Benutzer hinzufügen
 
-edit			= Save
-back			= Back
-add 			= Add
-cancel 		= Cancel
-delete 		= Delete
-up 			= Up
-down			= Down
-view 			= Edit
-number 		= Number
+edit			= Speichern
+back			= Zurück
+add 			= Hinzufügen
+cancel 		= Abbrechen
+delete 		= Entfernen
+up 			= Hinauf
+down			= Hinunter
+view 			= Bearbeiten
+number 		= Nummer
 name 			= Name
 email 		= Email
-title			= Title
-type_id 		= Type
-sub			= Parent Menu
-file			= File
-file.associated = Background image
-no_content  = No content
+title			= Titel
+type_id 		= Typ
+sub			= Übergeordnetes Menü
+file			= Datei
+file.associated = Hintergrundbild
+no_content  = Kein Inhalt
 upload_file = Upload
-close			= Close
+close			= Schliessen
 
-password 	= Password
-password2 	= Confirm password
-change 		= Save
-password.changed.successfully = Password changed
-password.change = Change password
-password.change.description = Please enter new password and confirm.
+password 	= Passwort
+password2 	= Passwort bestätigen
+change 		= Speichern
+password.changed.successfully = Passwort geändert
+password.change = Passwort ändern
+password.change.description = Geben Sie das neue Passwort ein, und bestätigen Sie die Eingabe.
 
+back_top = Zum Seitenanfang
 
-back_top = Back to top
-
-fieldNumpad = Enter number
-digitpad.text = Please use headphones
-
+fieldNumpad = Nummer eingeben
+digitpad.text = Bitte Kopfhörer benutzen
 gallery.edit = ~
 gallery.send = Ok
 
-specText.img 		= Touch to zoom
-specText.picture 	= Touch to zoom
-specText.audio 	= Touch to start and stop
-specText.video 	= Touch to start and stop
-specText.film 		= Touch to start and stop
-specText.volume-up = Touch to start and stop
+specText.img 		= Berühren zum Vergrössern
+specText.picture 	= Berühren zum Vergrössern
+specText.audio 	= Berühren zum Starten und Stoppen
+specText.video 	= Berühren zum Starten und Stoppen
+specText.film 		= Berühren zum Starten und Stoppen
+specText.volume-up = Berühren zum Starten und Stoppen
 specText.text 		=
 specText.html 		=
 specText.list-alt =
 
-constraint.required = Required
+constraint.required = Erforderlich
 constraint.min = Minimum: {0}
 constraint.max = Maximum: {0}
 constraint.minLength = Minimum length: {0}
@@ -78,7 +76,7 @@ error.pattern = Must satisfy {0}
 doc = Text
 video = Video
 audio = Audio
-img = Image
+img = Bild
 
 format.boolean = 
 
@@ -86,12 +84,12 @@ form.fixErrors = Die Tabletguideverwaltung kann leider Ihre eingabe so nicht spe
 form.error.number_already_exists = Diese Nummer existiert bereits.
 
 
-name_ex 	= Title german
-name_ex_de 	= Title english
-name_cat	= Title german
-name_cat_en	= Titke english
-date_begin = Opening date
-date_end = Closing date
+name_ex 	= Titel deutsch
+name_ex_de 	= Titel englisch
+name_cat	= Titel deutsch
+name_cat_en	= Titel englisch
+date_begin = Eröffnung
+date_end = Schliessung
 status_id = Ausstellung veröffentlichen
 comment = Text deutsch
 comment_en = Text englisch
@@ -124,8 +122,10 @@ email.signature = Das Team des Tabletguides
 
 
 exhibition.title = Inhalt
+exhibition.title.edit = Inhalt bearbeiten
 
 exhibition.list.title = Ausstellungsmanagement
+exhibition.list.overview = Übersicht Ausstellungen
 
 exhibition.file = Ausstellungsbilder.
 exhibition.file.title = Titelbild.
@@ -135,6 +135,7 @@ exhibition.file.menu.help =Bitte wählen Sie ein Menübild mit der Auflösung vo
 
 cat.title = Kategorien
 cat.title_en = Kategorien Englisch
+cat.overview = Übersicht Kategorien
 cat.add = Hinzufügen
 cat.file.deleted.successfully = Erfolgreich gelöscht.
 cat.edited.successfully = Erfolgreich eingefügt.

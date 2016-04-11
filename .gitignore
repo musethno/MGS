@@ -12,7 +12,7 @@ bin/
 /project/target/**
 /target
 
-/conf/application.conf
+conf/application.conf
 
 /public/data
 /public/data/*
