@@ -72,8 +72,8 @@ object Utils{
 	}
 
 	// constants
-	val path ="assets/data/" // live server path...
-	val url = "assets/data/" // live server data file url
+	val path ="/var/data-museum/" // live server path...
+	val url = "data/" // live server data file url
 	//val path ="/var/www/html/data-museum/" //testing data url in apache public html
 	//val url = "http://192.168.1.77/data-museum/" // testing - on port 80 @ arx
 	//val url = "http://roggwil.akehir.com/data-museum/" // testing - on port 80 @ mobi

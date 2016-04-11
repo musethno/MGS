@@ -91,7 +91,7 @@
 											</div>
 											<div class="gallery_caption swiper-slide" style="margin-top: 22px; width: 100px; text-align: center;">
 												<div> 
-													<img src="../@gallery(i).filename" id="@gallery(i).id" alt="@Html(gallery(i).caption.getOrElse(""))" title="@Html(gallery(i).caption.getOrElse(""))" />
+													<img src="/data/@gallery(i).filename" id="@gallery(i).id" alt="@Html(gallery(i).caption.getOrElse(""))" title="@Html(gallery(i).caption.getOrElse(""))" />
 												</div>
 										}else{
 											@Html(gallery(i).caption.getOrElse(""))

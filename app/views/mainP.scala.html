@@ -1,4 +1,4 @@
-@(title: String, back: String = routes.Application.index.toString)(content: Html)(implicit currentLang: Lang)
+@(title: String, back: String = routes.Application.index.toString)(content: Html)
 <!DOCTYPE html>
 <html>
   <head>
@@ -29,6 +29,8 @@
     <!-- Fonts -->
     
         <link href="@routes.Assets.at("css/fonts.css")" rel="stylesheet">
+        
+
 
     <!-- Bootstrap core JavaScript -->
 
@@ -113,13 +115,13 @@ function post(path, params, method) {
     	</div>
 		<!-- <div class="col-xs-4 col-md-3">
             <form action="@routes.Application.detailByNumber" method="POST">
-            <span id="fieldNumpad"  class="form-control input-lg fieldNumpad">@Messages("fieldNumpad")</span>
+            <span id="fieldNumpad"  class="form-control input-lg fieldNumpad">Nummer eingeben</span>
             </form>
 		</div> -->
 		<div id="numpad_wrapper" class="col-xs-6 col-md-6">
 		  <div id="numpad_container">
             <form action="@routes.Application.detailByNumber" method="POST">
-				<input id="inputNumpad" type="tel" class="form-control input-lg fieldNumpad" placeholder="@Messages("fieldNumpad")">
+				<input id="inputNumpad" type="tel" class="form-control input-lg fieldNumpad" placeholder="Nummer eingeben">
 			</form>
 		  </div>
 		      	</div>
@@ -134,8 +136,10 @@ function post(path, params, method) {
     	
     			<div class="col-xs-3 col-md-3" style="text-align: right; padding-left: 0px;!important">
     		<!-- Trigger the modal with a button -->
+    <!--  
 	<a class="en" href="javascript:post('/locale', {locale: 'de'});" href="javascript:void(0);"><img src="@routes.Assets.at("img/langswitch.png")" class="langbutton" data-inline="true" /></a>
 	<a class="de" href="javascript:post('/locale', {locale: 'en-US'});" href="javascript:void(0);"><img src="@routes.Assets.at("img/langswitch.png")" class="langbutton" data-inline="true" /></a>
+	-->
 			</div>
 		</div>
 	</nav>

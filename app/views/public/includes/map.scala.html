@@ -1,31 +1,44 @@
 @(values: Exhibition)
 @import helper.twitterBootstrap._
+<script>
+		function getParameterByName(name, url) {
+		    if (!url) url = window.location.href;
+		    name = name.replace(/[\[\]]/g, "\\$&");
+		    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+		        results = regex.exec(url);
+		    if (!results) return null;
+		    if (!results[2]) return '';
+		    return decodeURIComponent(results[2].replace(/\+/g, " "));
+		}
 
+    $( document ).ready(function(){
+		var queryStr = getParameterByName('fullscreen');
+		if(queryStr == "true"){
+			$(".navbar").hide();
+			$("#content").css("padding-top", "0px");
+			$(".container").css("padding", "0px 0px 0px 0px");			
+			$("#mapcontainer").css("height", "100%");
+			$("#mapcontainer").css("padding-top", "0px");
+			$("#annotation").attr("style","background-color: black; color: white; position: fixed; right: 0px; font-size: 22px; height: 100%; overflow: auto; padding: 27px; text-align: left; width: 15%;");
+			$(".annotation_single").attr("style","background-color: black;");
+			$("#photo").attr("style","float: left; height: 100%; width: 85%;");
+			$("html").css("overflow","hidden");
+		} 
+	});
 
-							
-    <link rel="stylesheet" href="/assets/css/leaflet.css" />
-    <link rel="stylesheet" href="/assets/js/leaflet/leaflet.draw/leaflet.draw.css" />
-    <link rel="stylesheet" href="/assets/js/bootstrap3-editable/css/bootstrap-editable.css" />
-    <link rel="stylesheet" href="/assets/js/bootstrap-wysihtml5/bootstrap-wysihtml5-0.0.2.css" />
-
-
+	
+</script>	
         <style type="text/css">
        	.container {
         height: 100%;
         width: 100%;
         }
-        #mapcontainer {
-        height: 90%;
-        padding-top: 22px;
-        }
-        #photo {
-		width: 100%;
-        height: 90%;
-        }
+
         
         #annotation {
         height: 10%;
         width: 100%;
+        z-index: 999;
         }
         
         html, body {
@@ -46,19 +59,40 @@
         
         .annotation_single {
         	display: none;
+		    margin-bottom: 20px;
+            padding: 15px;
+            background: lightgray;
+            margin-top: 20px;
         }
     </style>
+    			
+    <link rel="stylesheet" href="/assets/css/leaflet.css" />
+    <link rel="stylesheet" href="/assets/js/leaflet/leaflet.draw/leaflet.draw.css" />
+    <link rel="stylesheet" href="/assets/js/bootstrap3-editable/css/bootstrap-editable.css" />
+    <link rel="stylesheet" href="/assets/js/bootstrap-wysihtml5/bootstrap-wysihtml5-0.0.2.css" />
+
+
+
 
    <div id="mapcontainer">		
    		<div id="photo"></div>		
-   		<div id="annotation"></div>
+   		<div id="annotation">
+			<div class="annotation_single selected" style="display: block">
+				Vergrösserung der Ansicht: Zoomen mit zwei Fingern.<br/>
+						<br/>
+				Übersetzung der Telugu-Überschrift: Tippen auf die gewünschte Szene.<br/>
+
+
+			</div>'	
+		</div>
    </div>
     <script type="text/javascript">
+
       $(document).ready(function(){
 
 	                $.ajax({
                 type: "GET",
-                url: "/assets/data/maps/"+@values.id.get+"/ImageProperties.xml",
+                url: "/data/maps/"+@values.id.get+"/ImageProperties.xml",
                 dataType: "xml",
                 success: function(xml) {
                         $(xml).find('IMAGE_PROPERTIES').each(function(){
@@ -94,31 +128,9 @@
 	
 	
     <script type="text/javascript">
-	function getParameterByName(name, url) {
-	    if (!url) url = window.location.href;
-	    name = name.replace(/[\[\]]/g, "\\$&");
-	    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-	        results = regex.exec(url);
-	    if (!results) return null;
-	    if (!results[2]) return '';
-	    return decodeURIComponent(results[2].replace(/\+/g, " "));
-	}
-
-	$( document ).ready(function(){
-		var queryStr = getParameterByName('fullscreen');
-		if(queryStr == "true"){
-			$(".navbar").hide();
-			$("#content").css("padding-top", "0px");
-			$(".container").css("padding", "0px 0px 0px 0px");
-			$("#mapcontainer").css("height", "100%");
-			$("#mapcontainer").css("padding-top", "0px");
-			$("#annotation").css("height", "100%).css("width", "15%").css("padding","27px").css("float","left").css("font-size","22px").css("text-align","center").css("color","white").css("background-color","black");
-                        $("#photo").css("height", "100%).css("width", "85%").css("float","right");
-
-		}
-	});
 
 
+	
 
 	 var uniqID = {
 		  counter:0,
@@ -136,13 +148,13 @@
     
 
     
-       var map = L.map('photo').setView([37.8, -96], 4);
+       var map = L.map('photo', 'attributionControl: false').setView([37.8, -96], 4);
     var m_width = $("#photo").attr("data-width");
         console.log(m_width);
 
     var m_height = $("#photo").attr("data-height");
 
-   L.tileLayer.zoomify('/assets/data/maps/'+@values.id.get+'/', { 
+   L.tileLayer.zoomify('/data/maps/'+@values.id.get+'/', {
         width: @values.width, 
         height: @values.height,
         tolerance: '0.8',

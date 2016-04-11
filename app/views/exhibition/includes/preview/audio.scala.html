@@ -1,5 +1,5 @@
 @(values: Exhibition)
 <audio controls @if(values.file2.isDefined){poster="@values.file2.get"}>
-	<source src="@values.file.get" type="audio/mpeg">
+	<source src="/@values.file.get" type="audio/mpeg">
 	Your browser does not support the audio element.
 </audio>
