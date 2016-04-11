@@ -71,7 +71,13 @@
 
    <div id="mapcontainer">		
    		<div id="photo"></div>		
-   		<div id="annotation"></div>
+   		<div id="annotation">
+				<div class="annotation_single selected" style="display: block">
+				Vergrösserung der Ansicht: Zoomen mit zwei Fingern.<br/><br/>
+
+		Übersetzung der Telugu-Überschrift: Tippen auf die gewünschte Szene.
+				</div>				
+		</div>
    </div>
     <script type="text/javascript">
 
@@ -141,7 +147,7 @@
 
     var m_height = $("#photo").attr("data-height");
 
-   L.tileLayer.zoomify('http://130.60.62.125/assets/data/maps/'+@values.id.get+'/', {
+   L.tileLayer.zoomify('data/maps/'+@values.id.get+'/', {
         width: @values.width, 
         height: @values.height,
         tolerance: '0.8',
@@ -171,8 +177,6 @@
 			$(".selected").fadeIn();
 
 		}); 
-
-  							
 	}
 
 	var myStyle = {
