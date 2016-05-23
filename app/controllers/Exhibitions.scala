@@ -30,8 +30,6 @@ import java.io.File
 import scala.xml.XML
 import java.util.zip.{ZipEntry, ZipFile}
 import scala.collection.JavaConversions._
-
-
 object Exhibitions extends Controller with Secured{
 	
 
@@ -118,6 +116,7 @@ object Exhibitions extends Controller with Secured{
 
 				val data = Exhibition(NotAssigned, values.name, values.name_en, 0, Some(values.sub.getOrElse(id)), 0, None, None, None, None, true, values.number, values.type_id, None, None, None, None, None)
 				Exhibition.insertOrUpdate(data)
+				
 				Redirect(routes.Exhibitions.edit(id))
 				.flashing(
     				"success" -> "cat.created.successfully"
@@ -158,7 +157,43 @@ object Exhibitions extends Controller with Secured{
 		)
 	}
 	
+// QUIZ
+	
 
+	 
+
+	def serveQuestions(id: Long) = IsAuthenticated{user => _ =>
+	  implicit val quizFormat = Json.format[Quiz]
+	  val quizList = Exhibition.serveQuestions(id)
+	  val str = Json.obj("questions" -> quizList)
+		Ok(str)
+	}
+	
+	def addQuestion(id: Long, question_id: Long) = IsAuthenticated{user => _ =>
+		Exhibition.addQuestion(id, question_id)
+		Ok("done")
+		.flashing(
+    		"success" -> "Frage hinzugefügt"
+  	)
+	}
+	
+    def updateQuestion(id: Long) = Action { request =>
+  	  request.body.asJson.map { json =>
+       val question_id = (json \ "pk").toString().replace("\"", "");
+        val value = (json \ "value").toString().replace("\"", "");        
+        val field = (json \ "name").toString().replace("\"", "");
+        Exhibition.updateQuestion(id, question_id, field, value)
+        
+        Ok(json)
+    }.getOrElse {
+      BadRequest("Expecting Json data")
+    }
+	}
+	
+
+
+	
+	
 				
 	def menuForm(id: Long, id2: Long = 0) = Form(
 		mapping(
@@ -213,6 +248,7 @@ object Exhibitions extends Controller with Secured{
   }})
 	)
 	
+
 	def tourForm(id: Long, id2: Long = 0) = Form(
 		mapping(
 			"id" -> ignored(NotAssigned:Pk[Long]),
@@ -504,6 +540,7 @@ def serveMaps(id: Long) = Action { request =>
 
 
 }
+
 
 object Galleries extends Controller with Secured{
         def move(id: Long, sid: Long, parent_id: Long, upOrDown: Boolean) = IsAuthenticated{user => _ =>

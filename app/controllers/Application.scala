@@ -232,8 +232,6 @@ object Application extends Controller with ChangeLanguage with Secured{
 
 
 
-
-
 /**
  * Provide security features
  */

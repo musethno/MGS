@@ -21,6 +21,8 @@
 
 	@if(values.type_id.isDefined && (values.type_id.get==4 || values.type_id.get==5)){
 	<div class="row">
+	<script>
+</script>
 		<div class="col-md-6">
 		<h2>@Messages("file")</h2>
 			@form(action = routes.Exhibitions.insertFile(id, parent_id, 1), 'enctype -> "multipart/form-data") {
@@ -149,10 +151,15 @@ $(document).ready(function() {
 </script>
 }
 
-@if(values.type_id.isDefined && values.type_id.get==6){
-	@includes.insert.map(values)
-	}
-	
+
+@if(values.type_id.isDefined && values.type_id.get==7){
+	@includes.insert.quiz(id, parent_id, values, types)
+
+}
+
+@if(values.type_id.isDefined && values.type_id.get==8){
+	@includes.insert.quiz(id, parent_id, values, types)
+}	
 
 }
 

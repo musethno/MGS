@@ -75,6 +75,7 @@ case class Exhibition(
 	, file3: Option[String]
 	, width: Option[String]
 	, height: Option[String]
+
 )
 
 case class ExhibitionCat(
@@ -86,6 +87,17 @@ case class ExhibitionCat(
 	, number: Option[Long]
 )
 
+case class Quiz(
+  question_id: Option[String]
+  , id: Option[String]
+  , title: Option[String]
+  , question: Option[String]
+  , answer_a: Option[String]
+  , answer_b: Option[String]
+  , answer_c: Option[String]
+  , answer_d: Option[String]
+)
+
 
 
 case class Simple(id: Pk[Long])
@@ -95,6 +107,7 @@ case class Search(number: Long)
 
 object Exhibition{
 
+
 	val types:Seq[(Option[Long], String, Option[String])] = 
 	Seq(
 		  (None, "menu", None)
@@ -102,7 +115,8 @@ object Exhibition{
 		, (Some(3), "images", Some("picture"))
 		, (Some(4),"audio", Some("volume-up"))
 		, (Some(5),"video", Some("film"))
-		, (Some(6),"map", None)
+		, (Some(6),"map", Some("map"))
+		, (Some(7),"quiz", Some("question-sign"))
 	)
 
 	val typesSelect:Seq[(String, String)] = types.map(a => ({if(a._1.isDefined){a._1.get.toString}else{""}} ->a._2))
@@ -338,7 +352,6 @@ object Exhibition{
 	***********/
 	def insertOrUpdate(data: Exhibition, id: Long = 0): Long = {
 		
-
 		Logger.info(data.comment.toString)
 
 		// get info about sub
@@ -347,7 +360,6 @@ object Exhibition{
 		var position:Long 					= 1
 
 		if(id==0){
-
 			if(data.sub.isDefined){
 				sub = detail(data.sub.get)
 
@@ -666,6 +678,9 @@ object Exhibition{
 
 		sub
 	}
+	
+
+
 
 	def getIdFromNumber(number: Long): Option[Long] ={
 		
@@ -685,8 +700,72 @@ object Exhibition{
 		else{
 			None
 		}
-	}
+		
 
+		
+	}
+	
+	// QUIZ 
+	
+		def serveQuestions(id: Long):List[Quiz] = {
+			DB.withConnection{implicit c =>
+				SQL("SELECT * FROM museum.quiz WHERE parent_id={id} ORDER BY question_id ASC")
+				.on('id -> id)
+				.as(quizParser *)
+			}
+		}
+		val quizParser = {
+			get[Option[String]]("question_id")~		  
+			get[Option[String]]("parent_id")~
+			get[Option[String]]("title")~
+			get[Option[String]]("question")~
+			get[Option[String]]("answer_a")~
+			get[Option[String]]("answer_b")~
+			get[Option[String]]("answer_c")~
+			get[Option[String]]("answer_d") map {
+				case question_id~id~title~question~answer_a~answer_b~answer_c~answer_d=> 
+				Quiz(question_id,id, title, question, answer_a, answer_b, answer_c, answer_d)
+			}
+		}
+
+	def addQuestion(id: Long, question_id: Long){
+
+			Logger.info("Adding Question to Database...")
+  	  // prepare query
+			
+			val query = "INSERT INTO museum.quiz SET parent_id='"+id+"', question_id='"+question_id+"'";
+			
+  		// val query = "UPDATE museum.maps SET question='"+question+"', answerstring_1='"+answerstring_1+"', answerstring_2='"+answerstring_2+"', answerstring_3='"+answerstring_3+"', answerstring_4='"+answerstring_4+"', responsestring_1='"+responsestring_1+"', responsestring_2='"+responsestring_2+"', responsestring_3='"+responsestring_3+"', responsestring_4='"+responsestring_4+"'  WHERE id='"+id+"'";
+  		  // insert/update entry
+  		  DB.withConnection{implicit c =>
+  			  SQL(query).executeUpdate
+  			 			Logger.info("Done.")
+
+		   }
+	 }
+	
+
+	
+
+		
+	def updateQuestion(id: Long, question_id: String, field: String, value: String){
+
+			Logger.info("Updating Question, field: "+field+"...")
+  	  // prepare query
+			
+			val query = "UPDATE museum.quiz SET parent_id='"+id+"', "+field+"='"+value+"' WHERE question_ID='"+question_id+"'";
+  		// val query = "UPDATE museum.maps SET question='"+question+"', answerstring_1='"+answerstring_1+"', answerstring_2='"+answerstring_2+"', answerstring_3='"+answerstring_3+"', answerstring_4='"+answerstring_4+"', responsestring_1='"+responsestring_1+"', responsestring_2='"+responsestring_2+"', responsestring_3='"+responsestring_3+"', responsestring_4='"+responsestring_4+"'  WHERE id='"+id+"'";
+  		// insert/update entry
+  		  DB.withConnection{implicit c =>
+  			  SQL(query).executeUpdate
+  			  			Logger.info("Done.")
+		    } 
+	 }
+
+
+
+		
+	
 
 	object Tour{
 
@@ -725,6 +804,10 @@ object Exhibition{
 
 	}
 
+	
+	  
+	
+	
 
 	object Maps{
 
@@ -765,7 +848,6 @@ object Exhibition{
   		DB.withConnection{implicit c =>
   			SQL(query).executeUpdate
 		  } 
-		
 	}
 	
 		def annotate(shape_id: String, annotation: String){

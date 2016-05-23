@@ -1,0 +1,73 @@
+@(id: Long, parent_id: Long, values: Exhibition, types: Seq[(String, String)] )
+@import helper._
+
+ <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="/assets/js/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
+    <script>
+	 var uniqID = {
+		  counter:1,
+		  get:function(prefix) {
+		      if(!prefix) {
+		          prefix = ''+@values.id.get+''+'_';
+		      }
+		      var id =  uniqID.counter++;
+		      if(jQuery("#"+id).length == 0)
+		          return id;
+		      else
+		          return uniqID.get()	
+	   }
+	};
+	
+    $(document).ready(function(){
+    $.getJSON( "/admin/cat/@id/serveQuestions", function( obj ) {
+		$.each(obj.questions, function(entryIndex, entry) {
+          $('.question-container').append('<div id="'+ this.question_id +'" class="question choice row">Frage '+ this.question_id +':<div id="'+ this.question_id +'_answer_a">'+ this.answer_a +'</div><div id="'+ this.question_id +'_answer_b">'+ this.answer_b +'</div>');
+						
+		});
+
+
+	});
+
+    var uid = uniqID.get();
+      $("#addquestion").click(function(e){
+          e.preventDefault();
+        $.ajax({type: "POST",
+                url: "/admin/cat/@id/"+uid+"/addQuestion",
+                data: {},
+                success:function(result){
+                $('.question-container').append('<div class="question choice row"><div data-pk="+uid+" data-name="answer_a" id="'+uid+'">Antwort A ...</div><div id="'+uid+'">Antwort B ...</div><div id="'+uid+'_answer_c">Antwort C ...</div><div id="'+uid+'_answer_d">Antwort D ...</div></div>');
+                
+                $.fn.editable.defaults.mode = 'inline';
+                 
+                $('#answer_a').editable({
+				    type: 'text',
+				    url: '/admin/cat/@id/updateQuestion',
+				    ajaxOptions: {contentType: 'application/json', dataType: 'json'},
+				    params: function(params) { return JSON.stringify(params); }
+				});
+				
+				$('#answer_b).editable({
+				    type: 'text',
+				    url: '/admin/cat/@id/updateQuestion',
+				    ajaxOptions: {contentType: 'application/json', dataType: 'json'},
+				    params: function(params) { return JSON.stringify(params); }
+				}); 
+		
+					
+        }});
+      });
+      
+
+				
+				
+    });
+    </script>
+    
+		<div id="addquestion" class="row">
+				<button  id="addquestion" type="submit" class="btn btn-primary" value="@Messages("Frage hinzufügen")">
+		</div>
+		<div class="question-container">
+
+		</div>
+		</div> 
